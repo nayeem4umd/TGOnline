@@ -18,8 +18,12 @@
 
   window.TGApp = {
     state: {
-      apiBase: 'http://192.168.12.102/api/tp/online', // <-- replace with real base later
-      //apiBase:'http://localhost:5195/online', // <-- dev local
+      apiBaseI: 'http://192.168.12.102/api/tp/online', // <-- apibase internal
+      apiBaseE: 'http://tguse.dyndns.org:1978/api/tp/online', // <-- apibase external
+      apiBase: null,
+      apiMode: null,
+      apiModeKey: 'tg_api_mode',
+      apiBasePromise: null,
       token: () => localStorage.getItem('userToken') || '',
     },
 
@@ -143,18 +147,50 @@
       if (remember && savedEmail) $('email').value = savedEmail;
     },
 
-  async isInternalNetwork() {
-    try {
-        const res = await fetch( "http://182.37.64.4:1978/api/TG/TG/ping", { method: "GET", cache: "no-store" } );
-         return res.ok;
+    async pingUrl(url, timeoutMs = 1500) {
+      const controller = new AbortController();
+      const timer = setTimeout(() => controller.abort(), timeoutMs);
+      try {
+        await fetch(url, { method: "GET", cache: "no-store", mode: "no-cors", signal: controller.signal });
+        return true; // If fetch resolves, the host is reachable
       } catch (e) {
         return false;
+      } finally {
+        clearTimeout(timer);
       }
-   },
+    },
+
+    async isInternalNetwork() {
+      const internalUrl = new URL(this.state.apiBaseI);
+      internalUrl.pathname = '/ping';
+      return this.pingUrl(internalUrl.toString());
+    },
+
+    async ensureApiBase() {
+      if (this.state.apiBase) return this.state.apiBase;
+      if (!this.state.apiBasePromise) {
+        this.state.apiBasePromise = (async () => {
+          const cached = localStorage.getItem(this.state.apiModeKey);
+          if (cached === 'internal' || cached === 'external') {
+            this.state.apiMode = cached;
+            this.state.apiBase = cached === 'internal' ? this.state.apiBaseI : this.state.apiBaseE;
+            return this.state.apiBase;
+          }
+
+          const internalOk = await this.isInternalNetwork();
+          this.state.apiMode = internalOk ? 'internal' : 'external';
+          this.state.apiBase = internalOk ? this.state.apiBaseI : this.state.apiBaseE;
+          localStorage.setItem(this.state.apiModeKey, this.state.apiMode);
+          return this.state.apiBase;
+        })();
+      }
+      return this.state.apiBasePromise;
+    },
 
     // ===== API wrappers =====
     async apiGet(path, mockFn) {
-      const url = this.state.apiBase + path;
+      const base = await this.ensureApiBase();
+      const url = base + path;
       const headers = {};
       const t = this.state.token();
       if (t) headers['Authorization'] = 'Bearer ' + t;
@@ -169,7 +205,8 @@
     },
 
     async apiPost(path, body, mockFn) {
-      const url = this.state.apiBase + path;
+      const base = await this.ensureApiBase();
+      const url = base + path;
       const headers = { 'Content-Type': 'application/json' };
       const t = this.state.token();
       if (t) headers['Authorization'] = 'Bearer ' + t;
