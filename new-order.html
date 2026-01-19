@@ -1,0 +1,488 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <link rel="manifest" href="manifest.json" />
+  <link rel="icon" href="assets/logo.png" />
+  <meta name="theme-color" content="#2563eb" />
+  <script src="https://cdn.tailwindcss.com"></script>
+  <title>TRANSGULF - New Order</title>
+  <style>
+    body { background: #fbf2f4; }
+    .tile-shadow { box-shadow: 0 10px 22px rgba(15, 23, 42, 0.10); }
+  </style>
+</head>
+<body class="min-h-screen">
+  <div id="toast" class="hidden"></div>
+
+  <div id="drawerBackdrop" class="hidden fixed inset-0 bg-black/35 z-30"></div>
+  <aside id="drawer" class="fixed top-0 left-0 bottom-0 w-[280px] bg-white z-40 -translate-x-full transition-transform duration-200 tile-shadow">
+    <div class="p-4 border-b">
+      <div class="flex items-center justify-between">
+        <div class="font-extrabold tracking-[0.14em] text-slate-800">TRANSGULF</div>
+        <button id="btnCloseDrawer" class="w-10 h-10 rounded-xl hover:bg-slate-100">✕</button>
+      </div>
+      <div class="mt-2 text-xs text-slate-500 font-bold" id="hdrMeta">-</div>
+      <div class="text-sm font-extrabold text-slate-800" id="hdrUser">User</div>
+    </div>
+    <nav class="p-3 space-y-2">
+      <a href="dashboard.html" data-nav="dashboard" class="w-full flex items-center gap-3 px-4 h-11 rounded-2xl font-extrabold text-slate-700 hover:bg-slate-100"><span class="text-lg">🏠</span>Dashboard</a>
+      <a href="new-order.html" data-nav="neworder" class="w-full flex items-center gap-3 px-4 h-11 rounded-2xl font-extrabold text-slate-700 hover:bg-slate-100"><span class="text-lg">➕</span>New Order</a>
+      <a href="orders.html" data-nav="orders" class="w-full flex items-center gap-3 px-4 h-11 rounded-2xl font-extrabold text-slate-700 hover:bg-slate-100"><span class="text-lg">📄</span>Orders</a>
+      <a href="calculator.html" data-nav="calculator" class="w-full flex items-center gap-3 px-4 h-11 rounded-2xl font-extrabold text-slate-700 hover:bg-slate-100"><span class="text-lg">🧮</span>Calculator</a>
+      <a href="profile.html" data-nav="profile" class="w-full flex items-center gap-3 px-4 h-11 rounded-2xl font-extrabold text-slate-700 hover:bg-slate-100"><span class="text-lg">👤</span>Profile</a>
+    </nav>
+    <div class="p-4 border-t mt-auto">
+      <button id="btnLogout" class="w-full h-11 rounded-2xl bg-rose-600 text-white font-extrabold">Logout</button>
+    </div>
+  </aside>
+
+  <div class="flex min-h-screen">
+    <aside class="hidden md:flex md:w-[270px] bg-white border-r">
+      <div class="w-full flex flex-col">
+        <div class="p-5 border-b">
+          <div class="font-extrabold tracking-[0.18em] text-slate-800">TRANSGULF</div>
+          <div class="mt-2 text-xs text-slate-500 font-bold" id="hdrMeta">-</div>
+          <div class="text-sm font-extrabold text-slate-800" id="hdrUser">User</div>
+          <div class="mt-4 flex items-center gap-2">
+            <span id="netDot" class="w-2.5 h-2.5 rounded-full bg-emerald-500"></span>
+            <span id="netText" class="text-xs font-extrabold uppercase tracking-wider text-slate-500">Online</span>
+            <button id="installBtn" class="ml-auto hidden text-xs font-extrabold text-blue-600 hover:text-blue-700">Install</button>
+          </div>
+        </div>
+        <nav class="p-3 space-y-2">
+          <a href="dashboard.html" data-nav="dashboard" class="w-full flex items-center gap-3 px-4 h-11 rounded-2xl font-bold text-slate-700 hover:bg-slate-100"><span class="text-lg">🏠</span>Dashboard</a>
+          <a href="new-order.html" data-nav="neworder" class="w-full flex items-center gap-3 px-4 h-11 rounded-2xl font-bold text-slate-700 hover:bg-slate-100"><span class="text-lg">➕</span>New Order</a>
+          <a href="orders.html" data-nav="orders" class="w-full flex items-center gap-3 px-4 h-11 rounded-2xl font-bold text-slate-700 hover:bg-slate-100"><span class="text-lg">📄</span>Orders</a>
+          <a href="calculator.html" data-nav="calculator" class="w-full flex items-center gap-3 px-4 h-11 rounded-2xl font-bold text-slate-700 hover:bg-slate-100"><span class="text-lg">🧮</span>Calculator</a>
+          <a href="profile.html" data-nav="profile" class="w-full flex items-center gap-3 px-4 h-11 rounded-2xl font-bold text-slate-700 hover:bg-slate-100"><span class="text-lg">👤</span>Profile</a>
+        </nav>
+        <div class="p-4 border-t mt-auto">
+          <button id="btnLogout" class="w-full h-11 rounded-2xl bg-rose-600 text-white font-extrabold">Logout</button>
+        </div>
+      </div>
+    </aside>
+
+    <div class="flex-1 min-w-0">
+      <header class="md:hidden sticky top-0 z-20 bg-[#fbf2f4]">
+        <div class="px-4 pt-4 pb-3">
+          <div class="relative flex items-center justify-between">
+            <button id="btnMenu" class="w-10 h-10 rounded-xl flex items-center justify-center active:scale-95"><span class="text-2xl leading-none">☰</span></button>
+            <div class="absolute left-1/2 -translate-x-1/2 text-center"><div class="text-base font-extrabold tracking-[0.18em] text-slate-800">TRANSGULF</div></div>
+            <button id="installBtn" class="hidden w-10 h-10 rounded-xl flex items-center justify-center text-xs font-extrabold text-blue-700 border border-blue-200 bg-white">Install</button>
+          </div>
+          <div class="mt-3 flex items-center gap-2">
+            <span id="netDot" class="w-2.5 h-2.5 rounded-full bg-emerald-500"></span>
+            <span id="netText" class="text-xs font-extrabold uppercase tracking-wider text-slate-500">Online</span>
+            <div class="ml-auto text-xs text-slate-500 font-bold" id="hdrMeta">-</div>
+          </div>
+        </div>
+      </header>
+
+      <main class="px-4 md:px-8 pb-24 md:pb-10 pt-4 md:pt-8 max-w-6xl mx-auto">
+        <div class="flex items-start justify-between gap-4 mb-5">
+          <div>
+            <div class="text-xl md:text-2xl font-extrabold text-slate-800">New Order</div>
+            <div class="text-sm text-slate-500 font-semibold">Create an order request</div>
+          </div>
+          <a href="orders.html" class="hidden sm:inline-flex h-11 px-4 rounded-2xl bg-white border border-slate-200 tile-shadow font-extrabold text-slate-700 items-center">View Orders</a>
+        </div>
+
+        <div class="bg-white rounded-3xl border border-slate-200 tile-shadow p-5 md:p-6">
+          <form id="frmOrder" class="grid grid-cols-1 md:grid-cols-2 gap-4">
+            <div class="md:col-span-2">
+              <label class="block text-[11px] font-extrabold text-slate-600 mb-1 uppercase tracking-wider">Project / Site</label>
+              <select id="siteName" class="w-full h-11 rounded-2xl border border-slate-200 bg-white px-3 text-sm font-semibold focus:outline-none focus:ring-4 focus:ring-blue-500/15 focus:border-blue-500">
+                <option value="">-- Select --</option>
+              </select>
+            </div>
+
+            <div class="md:col-span-2">
+              <label class="block text-[11px] font-extrabold text-slate-600 mb-1 uppercase tracking-wider">Products</label>
+              <select id="grade" class="w-full h-11 rounded-2xl border border-slate-200 bg-white px-3 text-sm font-semibold focus:outline-none focus:ring-4 focus:ring-blue-500/15 focus:border-blue-500">
+                <option value="">-- Select --</option>
+              </select>
+            </div>
+
+            <div class="md:col-span-2 grid grid-cols-1 md:grid-cols-3 gap-4">
+              <div>
+                <label class="block text-[11px] font-extrabold text-slate-600 mb-1 uppercase tracking-wider">Quantity (m3)</label>
+                <input id="quantity" type="number" min="1" step="0.5" class="w-full h-11 rounded-2xl border border-slate-200 bg-slate-50 px-4 text-sm font-semibold focus:outline-none focus:ring-4 focus:ring-blue-500/15 focus:border-blue-500" placeholder="e.g., 12" />
+              </div>
+
+              <div>
+                <label class="block text-[11px] font-extrabold text-slate-600 mb-1 uppercase tracking-wider">Required Date &amp; Time</label>
+                <div class="grid grid-cols-2 gap-2">
+                  <input id="requiredDate" type="date" autocomplete="off" class="w-full h-11 rounded-2xl border border-slate-200 bg-slate-50 px-4 text-sm font-semibold focus:outline-none focus:ring-4 focus:ring-blue-500/15 focus:border-blue-500" />
+                  <select id="requiredTime" class="w-full h-11 rounded-2xl border border-slate-200 bg-white px-3 text-sm font-semibold focus:outline-none focus:ring-4 focus:ring-blue-500/15 focus:border-blue-500">
+                    <option value="">-- Time --</option>
+                  </select>
+                </div>
+                <div class="mt-1 text-[11px] font-semibold text-slate-500">Select from picker (24-hour format)</div>
+              </div>
+
+              <div>
+                <label class="block text-[11px] font-extrabold text-slate-600 mb-1 uppercase tracking-wider">Interval(Minutes)</label>
+                <input id="intervalTime" type="number" min="0" step="1" class="w-full h-11 rounded-2xl border border-slate-200 bg-slate-50 px-4 text-sm font-semibold focus:outline-none focus:ring-4 focus:ring-blue-500/15 focus:border-blue-500" placeholder="0" />
+              </div>
+            </div>
+
+            <div class="md:col-span-2">
+              <label class="block text-[11px] font-extrabold text-slate-600 mb-1 uppercase tracking-wider">Pumps</label>
+              <div id="pumpList" class="grid grid-cols-1 sm:grid-cols-2 gap-3">
+                <div class="rounded-2xl border border-slate-200 bg-slate-50 p-3 text-sm text-slate-500">
+                  Select a project to load pump types.
+                </div>
+              </div>
+            </div>
+
+            <div class="md:col-span-2 grid grid-cols-1 md:grid-cols-2 gap-4">
+              <div>
+                <label class="block text-[11px] font-extrabold text-slate-600 mb-1 uppercase tracking-wider">Ice</label>
+                <select id="iceType" class="w-full h-11 rounded-2xl border border-slate-200 bg-white px-3 text-sm font-semibold focus:outline-none focus:ring-4 focus:ring-blue-500/15 focus:border-blue-500">
+                  <option value="">-- Select (optional) --</option>
+                </select>
+              </div>
+              <div>
+                <label class="block text-[11px] font-extrabold text-slate-600 mb-1 uppercase tracking-wider">Element</label>
+                <select id="elementType" class="w-full h-11 rounded-2xl border border-slate-200 bg-white px-3 text-sm font-semibold focus:outline-none focus:ring-4 focus:ring-blue-500/15 focus:border-blue-500">
+                  <option value="">-- Select --</option>
+                </select>
+              </div>
+            </div>
+
+            <div class="md:col-span-2">
+              <label class="block text-[11px] font-extrabold text-slate-600 mb-1 uppercase tracking-wider">Remarks</label>
+              <textarea id="remarks" rows="3" class="w-full rounded-2xl border border-slate-200 bg-slate-50 px-4 py-3 text-sm font-semibold focus:outline-none focus:ring-4 focus:ring-blue-500/15 focus:border-blue-500" placeholder="Any special instructions"></textarea>
+            </div>
+
+            <div class="md:col-span-2 flex flex-col sm:flex-row gap-3 pt-2">
+              <button id="btnSubmit" type="submit" class="h-11 rounded-2xl bg-blue-600 text-white font-extrabold px-5 tile-shadow active:scale-[0.99]">Submit Order</button>
+              <button id="btnReset" type="button" class="h-11 rounded-2xl bg-white border border-slate-200 text-slate-700 font-extrabold px-5">Reset</button>              
+            </div>
+          </form>
+        </div>
+
+        <div id="errBox" class="hidden mt-4 rounded-2xl border border-rose-200 bg-rose-50 p-3 text-sm text-rose-800"></div>
+      </main>
+
+      <nav class="md:hidden fixed bottom-0 left-0 right-0 z-20 bg-white border-t border-slate-200">
+        <div class="grid grid-cols-3 h-14">
+          <a href="dashboard.html" data-nav="dashboard" class="flex flex-col items-center justify-center gap-1 text-xs font-bold text-slate-600">
+            <span class="text-lg">&#x1F3E0;</span>
+            <span>Dashboard</span>
+          </a>
+          <a href="new-order.html" data-nav="neworder" class="flex flex-col items-center justify-center gap-1 text-xs font-bold text-slate-600">
+            <span class="text-lg">&#x2795;</span>
+            <span>New Order</span>
+          </a>
+          <a href="orders.html" data-nav="orders" class="flex flex-col items-center justify-center gap-1 text-xs font-bold text-slate-600">
+            <span class="text-lg">&#x1F4C4;</span>
+            <span>Orders</span>
+          </a>
+        </div>
+      </nav>
+    </div>
+  </div>
+
+  <script src="app.js"></script>
+  <script>
+    TGApp.initShell('neworder');
+
+    const errBox = $('errBox');
+    const showError = (m)=>{ errBox.textContent=m; errBox.classList.remove('hidden'); };
+    const hideError = ()=>{ errBox.textContent=''; errBox.classList.add('hidden'); };
+
+    function payloadFromForm(){
+      const siteEl = $('siteName');
+      const selected = siteEl?.options?.[siteEl.selectedIndex];
+      const customerCode = localStorage.getItem('cusCode') || "";
+      const userCode = localStorage.getItem('userCode') || "";
+      const iceEl = $('iceType');
+      const intervalEl = $('intervalTime');
+      const eleEl = $('elementType');
+      const dt = getRequiredDateTime();      
+      const pumpSelections = collectPumpSelections();
+      const pumpsStr = pumpSelections.map((p) => `${p.qty}`).join(':');
+      const pumpCnt = pumpSelections.reduce((sum, p) => sum + (Number(p.qty) || 0), 0);
+      const Qty = Number($('quantity')?.value || 0);
+
+      return {
+          reqNo: "",
+          reqDate: dt,
+          cusCode: customerCode,
+          enqNo: selected?.dataset?.enqno || "",
+          projcode: siteEl?.value || "",
+          mixcode: $('grade')?.value || "",
+          qty: Qty,
+          supDate: dt,
+          intTime: intervalEl?.value ? Number(intervalEl.value) : 0,
+          PumpCnt:pumpCnt,
+          Pump: pumpCnt>0?pumpsStr:"",
+          ice: iceEl?.value || "",
+          eleCode: eleEl?.value || "",
+          Remarks: $('remarks')?.value || "",
+          user: userCode
+        };
+    }
+
+    function validate(p){      
+      if(!p.projcode) return "Please select Project / Site";
+      if(!p.mixcode) return "Please select Products";
+      if(!p.qty || p.qty <= 0) return "Please enter Quantity";
+      if(!p.supDate) return "Please select Required Date & Time";
+      return "";
+    }
+
+    $('btnReset').addEventListener('click', () => {
+      $('frmOrder').reset();
+      hideError();
+      TGApp.toast('Reset done', 'info');
+    });
+
+    $('frmOrder').addEventListener('submit', async (e) => {
+      e.preventDefault();
+      hideError();
+
+      const p = payloadFromForm();
+      const err = validate(p);
+      if(err){ showError(err); TGApp.toast(err, 'warn'); return; }
+
+      const btn = $('btnSubmit');
+      btn.disabled = true;
+      btn.textContent = "Submitting...";
+
+      const res = await TGApp.apiPost('/SetRequest', p, (payload) => TGApp.mock.addOrder(payload));
+
+      btn.disabled = false;
+      btn.textContent = "Submit Order";
+
+      if(res && (res.ok === true || res.success === true || res.requestNo)){
+        TGApp.toast(res.message || ("Order created: " + (res.requestNo || "")), 'ok');
+        setTimeout(() => window.location.href = 'orders.html?tab=current', 500);
+      } else {
+        showError("Failed to submit order (API).");
+        TGApp.toast("Submit failed", 'err');
+      }
+    });
+
+    async function loadProjects(){
+      const siteEl = $('siteName');
+      if (!siteEl) return;
+
+      siteEl.innerHTML = '<option value="">Loading...</option>';
+
+      const customerCode = localStorage.getItem('custtomercode')
+        || localStorage.getItem('customerCode')
+        || localStorage.getItem('cusCode')
+        || "";
+      if (!customerCode) {
+        siteEl.innerHTML = '<option value="">-- Select --</option>';
+        showError("Customer code not found. Please sign in again.");
+        return;
+      }
+
+      const data = await TGApp.apiGet(`/GetMasters?TYPE=0&CODE=${encodeURIComponent(customerCode)}`);
+      if (!Array.isArray(data) || data.length === 0) {
+        siteEl.innerHTML = '<option value="">-- Select --</option>';
+        showError("No projects found for this customer.");
+        return;
+      }
+
+      siteEl.innerHTML = '<option value="">-- Select --</option>';
+      data.forEach((row) => {
+        const opt = document.createElement('option');
+        opt.value = row.PROJCODE ?? "";
+        opt.textContent = row.PROJNAME ?? row.PROJCODE ?? "-";
+        if (row.ENQNO != null) opt.dataset.enqno = row.ENQNO;
+        siteEl.appendChild(opt);
+      });
+    }
+
+    function setDetailsEnabled(enabled){
+      ['grade','quantity','requiredDate','requiredTime','intervalTime','iceType','elementType','remarks']
+        .forEach((id) => {
+          const el = $(id);
+          if (el) el.disabled = !enabled;
+        });
+      if ($('pumpList')) $('pumpList').classList.toggle('opacity-60', !enabled);
+      document.querySelectorAll('#pumpList input[data-pump-code]').forEach((inp) => {
+        inp.disabled = !enabled;
+      });
+    }
+
+    function clearDetails(){
+      $('grade') && ($('grade').innerHTML = '<option value="">-- Select --</option>');
+      $('quantity') && ($('quantity').value = '');
+      $('requiredDate') && ($('requiredDate').value = '');
+      $('requiredTime') && ($('requiredTime').value = '');
+      $('intervalTime') && ($('intervalTime').value = '');
+      $('elementType') && ($('elementType').value = '');
+      if ($('pumpList')) {
+        $('pumpList').innerHTML = '<div class="rounded-2xl border border-slate-200 bg-slate-50 p-3 text-sm text-slate-500">Select a project to load pump types.</div>';
+      }
+      $('iceType') && ($('iceType').innerHTML = '<option value="">-- Select (optional) --</option>');
+      $('remarks') && ($('remarks').value = '');
+    }
+
+    async function loadProductsAndPumps(enqNo){
+      const productEl = $('grade');
+      const pumpListEl = $('pumpList');
+      const iceEl = $('iceType');
+      if (!productEl) return;
+
+      productEl.innerHTML = '<option value="">Loading...</option>';
+      if (pumpListEl) pumpListEl.innerHTML = '<div class="rounded-2xl border border-slate-200 bg-slate-50 p-3 text-sm text-slate-500">Loading pump types...</div>';
+      if (iceEl) iceEl.innerHTML = '<option value="">Loading...</option>';
+
+      if (!enqNo) {
+        productEl.innerHTML = '<option value="">-- Select --</option>';
+        if (pumpListEl) {
+          pumpListEl.innerHTML = '<div class="rounded-2xl border border-slate-200 bg-slate-50 p-3 text-sm text-slate-500">No pump types available.</div>';
+        }
+        if (iceEl) iceEl.innerHTML = '<option value="">-- Select (optional) --</option>';
+        return;
+      }
+
+      const data = await TGApp.apiGet(`/GetMasters?TYPE=1&CODE=${encodeURIComponent(enqNo)}`);
+      const list = Array.isArray(data) ? data : [];
+      const products = list.filter((row) => String(row.TYPE) === "0");
+      const pumps = list.filter((row) => String(row.TYPE) === "1");
+      const ices = list.filter((row) => String(row.TYPE) === "2");
+
+      productEl.innerHTML = '<option value="">-- Select --</option>';
+      products.forEach((row) => {
+        const opt = document.createElement('option');
+        opt.value = row.CODE ?? "";
+        opt.textContent = row.NAME ?? row.CODE ?? "-";
+        productEl.appendChild(opt);
+      });
+
+      if (pumpListEl) {
+        if (pumps.length === 0) {
+          pumpListEl.innerHTML = '<div class="rounded-2xl border border-slate-200 bg-slate-50 p-3 text-sm text-slate-500">No pump types available.</div>';
+        } else {
+          pumpListEl.innerHTML = '';
+          pumps.forEach((row) => {
+            const code = row.CODE ?? "";
+            const name = row.NAME ?? row.CODE ?? "-";
+            const wrap = document.createElement('div');
+            wrap.className = 'rounded-2xl border border-slate-200 bg-white p-3';
+            wrap.innerHTML = `
+              <div class="text-xs font-extrabold uppercase tracking-wider text-slate-500">${name}</div>
+              <div class="mt-2">
+                <input type="number" min="0" step="1" data-pump-code="${code}" data-pump-name="${name}" class="w-full h-10 rounded-xl border border-slate-200 bg-slate-50 px-3 text-sm font-semibold focus:outline-none focus:ring-4 focus:ring-blue-500/15 focus:border-blue-500" placeholder="0" />
+              </div>`;
+            pumpListEl.appendChild(wrap);
+          });
+        }
+      }
+
+      if (iceEl) {
+        iceEl.innerHTML = '<option value="">-- Select (optional) --</option>';
+        ices.forEach((row) => {
+          const opt = document.createElement('option');
+          opt.value = row.CODE ?? "";
+          opt.textContent = row.NAME ?? row.CODE ?? "-";
+          iceEl.appendChild(opt);
+        });
+      }
+
+      if (products.length === 0) {
+        showError("No products found for this project.");
+      }
+    }
+
+    function getRequiredDateTime(){
+      const d = $('requiredDate')?.value || "";
+      const t = $('requiredTime')?.value || "";
+      return d && t ? `${d}T${t}` : "";
+    }
+
+    function populateTimeOptions(){
+      const timeEl = $('requiredTime');
+      if (!timeEl) return;
+      const current = timeEl.value || "";
+      timeEl.innerHTML = '<option value="">-- Time --</option>';
+      for (let h = 0; h < 24; h++) {
+        for (let m = 0; m < 60; m += 15) {
+          const hh = String(h).padStart(2, '0');
+          const mm = String(m).padStart(2, '0');
+          const value = `${hh}:${mm}`;
+          const opt = document.createElement('option');
+          opt.value = value;
+          opt.textContent = value;
+          timeEl.appendChild(opt);
+        }
+      }
+      if (current) timeEl.value = current;
+    }
+
+    // default date/time
+    (function(){
+      populateTimeOptions();
+      const d = new Date();
+      const yyyy = d.getFullYear();
+      const mm = String(d.getMonth()+1).padStart(2,'0');
+      const dd = String(d.getDate()).padStart(2,'0');
+      $('requiredDate').value = `${yyyy}-${mm}-${dd}`;
+      $('requiredTime').value = '08:00';
+    })();
+
+    loadProjects();
+    setDetailsEnabled(false);
+    clearDetails();
+    loadElements();
+    populateTimeOptions();
+
+
+    $('siteName')?.addEventListener('change', () => {
+      hideError();
+      clearDetails();
+      const selected = $('siteName')?.options?.[$('siteName').selectedIndex];
+      const enqNo = selected?.dataset?.enqno || "";
+      if (!enqNo) {
+        setDetailsEnabled(false);
+        return;
+      }
+      setDetailsEnabled(true);
+      loadProductsAndPumps(enqNo);
+    });
+
+    function collectPumpSelections(){
+      const targetCodes = ['M', 'B', 'S'];
+      const byCode = new Map();
+      document.querySelectorAll('#pumpList input[data-pump-code]').forEach((inp) => {
+        const code = (inp.dataset.pumpCode || "").trim();
+        const name = (inp.dataset.pumpName || "").trim();
+        const qty = Number(inp.value || 0);
+        if (code) {
+          byCode.set(code, { code, name, qty: Number.isFinite(qty) ? qty : 0 });
+        }
+      });
+      return targetCodes.map((code) => {
+        const match = byCode.get(code);
+        return match || { code, name: "", qty: 0 };
+      });
+    }
+
+    async function loadElements(){
+      const el = $('elementType');
+      if (!el) return;
+      el.innerHTML = '<option value="">Loading...</option>';
+
+      const data = await TGApp.apiGet('/GetMasters?TYPE=2&CODE=0');
+      const list = Array.isArray(data) ? data : [];
+
+      el.innerHTML = '<option value="">-- Select --</option>';
+      list.forEach((row) => {
+        const opt = document.createElement('option');
+        opt.value = row.CODE ?? "";
+        opt.textContent = row.NAME ?? row.CODE ?? "-";
+        el.appendChild(opt);
+      });
+    }
+  </script>
+</body>
+</html>

@@ -1,0 +1,532 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <link rel="manifest" href="manifest.json" />
+  <link rel="icon" href="assets/logo.png" />
+  <meta name="theme-color" content="#2563eb" />
+  <script src="https://cdn.tailwindcss.com"></script>
+  <title>TRANSGULF - Orders</title>
+  <style>
+    body { background: #fbf2f4; }
+    .tile-shadow { box-shadow: 0 10px 22px rgba(15, 23, 42, 0.10); }
+  </style>
+</head>
+
+<body class="min-h-screen">
+  <!-- Toast -->
+  <div id="toast" class="hidden"></div>
+
+  <!-- Mobile Drawer -->
+  <div id="drawerBackdrop" class="hidden fixed inset-0 bg-black/35 z-30"></div>
+  <aside id="drawer" class="fixed top-0 left-0 bottom-0 w-[280px] bg-white z-40 -translate-x-full transition-transform duration-200 tile-shadow">
+    <div class="p-4 border-b">
+      <div class="flex items-center justify-between">
+        <div class="font-extrabold tracking-[0.14em] text-slate-800">TRANSGULF</div>
+        <button id="btnCloseDrawer" class="w-10 h-10 rounded-xl hover:bg-slate-100">✕</button>
+      </div>
+      <div class="mt-2 text-xs text-slate-500 font-bold" id="hdrMeta">-</div>
+      <div class="text-sm font-extrabold text-slate-800" id="hdrUser">User</div>
+    </div>
+    <nav class="p-3 space-y-2">
+      <a href="dashboard.html" data-nav="dashboard" class="w-full flex items-center gap-3 px-4 h-11 rounded-2xl font-extrabold text-slate-700 hover:bg-slate-100">
+        <span class="text-lg">🏠</span><span class="truncate">Dashboard</span>
+      </a>
+      <a href="new-order.html" data-nav="neworder" class="w-full flex items-center gap-3 px-4 h-11 rounded-2xl font-extrabold text-slate-700 hover:bg-slate-100">
+        <span class="text-lg">➕</span><span class="truncate">New Order</span>
+      </a>
+      <a href="orders.html" data-nav="orders" class="w-full flex items-center gap-3 px-4 h-11 rounded-2xl font-extrabold text-slate-700 hover:bg-slate-100">
+        <span class="text-lg">📄</span><span class="truncate">Orders</span>
+      </a>
+      <a href="calculator.html" data-nav="calculator" class="w-full flex items-center gap-3 px-4 h-11 rounded-2xl font-extrabold text-slate-700 hover:bg-slate-100">
+        <span class="text-lg">🧮</span><span class="truncate">Calculator</span>
+      </a>
+      <a href="profile.html" data-nav="profile" class="w-full flex items-center gap-3 px-4 h-11 rounded-2xl font-extrabold text-slate-700 hover:bg-slate-100">
+        <span class="text-lg">👤</span><span class="truncate">Profile</span>
+      </a>
+    </nav>
+    <div class="p-4 border-t mt-auto">
+      <button id="btnLogout" class="w-full h-11 rounded-2xl bg-rose-600 text-white font-extrabold">Logout</button>
+    </div>
+  </aside>
+
+  <div class="flex min-h-screen">
+    <!-- Desktop Sidebar -->
+    <aside class="hidden md:flex md:w-[270px] bg-white border-r">
+      <div class="w-full flex flex-col">
+        <div class="p-5 border-b">
+          <div class="font-extrabold tracking-[0.18em] text-slate-800">TRANSGULF</div>
+          <div class="mt-2 text-xs text-slate-500 font-bold" id="hdrMeta">-</div>
+          <div class="text-sm font-extrabold text-slate-800" id="hdrUser">User</div>
+
+          <div class="mt-4 flex items-center gap-2">
+            <span id="netDot" class="w-2.5 h-2.5 rounded-full bg-emerald-500"></span>
+            <span id="netText" class="text-xs font-extrabold uppercase tracking-wider text-slate-500">Online</span>
+            <button id="installBtn" class="ml-auto hidden text-xs font-extrabold text-blue-600 hover:text-blue-700">Install</button>
+          </div>
+        </div>
+
+        <nav class="p-3 space-y-2">
+          <a href="dashboard.html" data-nav="dashboard" class="w-full flex items-center gap-3 px-4 h-11 rounded-2xl font-bold text-slate-700 hover:bg-slate-100">
+            <span class="text-lg">🏠</span><span class="truncate">Dashboard</span>
+          </a>
+          <a href="new-order.html" data-nav="neworder" class="w-full flex items-center gap-3 px-4 h-11 rounded-2xl font-bold text-slate-700 hover:bg-slate-100">
+            <span class="text-lg">➕</span><span class="truncate">New Order</span>
+          </a>
+          <a href="orders.html" data-nav="orders" class="w-full flex items-center gap-3 px-4 h-11 rounded-2xl font-bold text-slate-700 hover:bg-slate-100">
+            <span class="text-lg">📄</span><span class="truncate">Orders</span>
+          </a>
+          <a href="calculator.html" data-nav="calculator" class="w-full flex items-center gap-3 px-4 h-11 rounded-2xl font-bold text-slate-700 hover:bg-slate-100">
+            <span class="text-lg">🧮</span><span class="truncate">Calculator</span>
+          </a>
+          <a href="profile.html" data-nav="profile" class="w-full flex items-center gap-3 px-4 h-11 rounded-2xl font-bold text-slate-700 hover:bg-slate-100">
+            <span class="text-lg">👤</span><span class="truncate">Profile</span>
+          </a>
+        </nav>
+
+        <div class="p-4 border-t mt-auto">
+          <button id="btnLogout" class="w-full h-11 rounded-2xl bg-rose-600 text-white font-extrabold">Logout</button>
+        </div>
+      </div>
+    </aside>
+
+    <!-- Main -->
+    <div class="flex-1 min-w-0">
+      <!-- Mobile Top bar -->
+      <header class="md:hidden sticky top-0 z-20 bg-[#fbf2f4]">
+        <div class="px-4 pt-4 pb-3">
+          <div class="relative flex items-center justify-between">
+            <button id="btnMenu" class="w-10 h-10 rounded-xl flex items-center justify-center active:scale-95">
+              <span class="text-2xl leading-none">☰</span>
+            </button>
+
+            <div class="absolute left-1/2 -translate-x-1/2 text-center">
+              <div class="text-base font-extrabold tracking-[0.18em] text-slate-800">TRANSGULF</div>
+            </div>
+
+            <button id="installBtn" class="hidden w-10 h-10 rounded-xl flex items-center justify-center text-xs font-extrabold text-blue-700 border border-blue-200 bg-white">
+              Install
+            </button>
+          </div>
+
+          <div class="mt-3 flex items-center gap-2">
+            <span id="netDot" class="w-2.5 h-2.5 rounded-full bg-emerald-500"></span>
+            <span id="netText" class="text-xs font-extrabold uppercase tracking-wider text-slate-500">Online</span>
+            <div class="ml-auto text-xs text-slate-500 font-bold" id="hdrMeta">-</div>
+          </div>
+        </div>
+      </header>
+
+      <main class="px-4 md:px-8 pb-24 md:pb-10 pt-4 md:pt-8 max-w-6xl mx-auto">
+        <div class="flex items-start justify-between gap-4 mb-5">
+          <div>
+            <div class="text-xl md:text-2xl font-extrabold text-slate-800">Orders</div>
+            <div class="text-sm text-slate-500 font-semibold">Browse orders by status (New / Approved / Rescheduled / Rejected / All).</div>
+          </div>
+          <a href="new-order.html" class="hidden sm:inline-flex h-11 px-4 rounded-2xl bg-blue-600 text-white tile-shadow font-extrabold items-center">
+            ➕ New Order
+          </a>
+        </div>
+
+        <!-- Tabs + Filters -->
+        <div class="bg-white rounded-3xl border border-slate-200 tile-shadow p-2 sm:p-3">
+          <div class="flex gap-2 overflow-x-auto">
+            <button data-tab="new" class="tabBtn px-4 h-10 rounded-2xl font-extrabold text-sm">New</button>
+            <button data-tab="approved" class="tabBtn px-4 h-10 rounded-2xl font-extrabold text-sm">Approved</button>
+            <button data-tab="rescheduled" class="tabBtn px-4 h-10 rounded-2xl font-extrabold text-sm">Rescheduled</button>
+            <button data-tab="rejected" class="tabBtn px-4 h-10 rounded-2xl font-extrabold text-sm">Rejected</button>
+            <button data-tab="all" class="tabBtn px-4 h-10 rounded-2xl font-extrabold text-sm">All</button>
+          </div>
+
+          <div class="p-3 sm:p-4">
+            <div class="flex flex-col gap-3">
+              <div class="flex flex-col sm:flex-row gap-3 sm:items-center">
+                <div class="flex-1">
+                  <input id="txtSearch" type="text" placeholder="Search order no / site / grade..."
+                         class="w-full h-11 rounded-2xl border border-slate-200 bg-slate-50 px-4 text-sm font-semibold focus:outline-none focus:ring-4 focus:ring-blue-500/15 focus:border-blue-500" />
+                </div>
+                <button id="btnRefresh" class="h-11 px-4 rounded-2xl bg-white border border-slate-200 font-extrabold text-slate-700">Refresh</button>
+              </div>
+              <div class="grid grid-cols-1 sm:grid-cols-2 gap-3">
+                <div>
+                  <label class="block text-[11px] font-extrabold text-slate-600 mb-1 uppercase tracking-wider">From date</label>
+                  <input id="fromDate" type="date" autocomplete="off"
+                         class="w-full h-11 rounded-2xl border border-slate-200 bg-slate-50 px-4 text-sm font-semibold focus:outline-none focus:ring-4 focus:ring-blue-500/15 focus:border-blue-500" />
+                </div>
+                <div>
+                  <label class="block text-[11px] font-extrabold text-slate-600 mb-1 uppercase tracking-wider">To date</label>
+                  <input id="toDate" type="date" autocomplete="off"
+                         class="w-full h-11 rounded-2xl border border-slate-200 bg-slate-50 px-4 text-sm font-semibold focus:outline-none focus:ring-4 focus:ring-blue-500/15 focus:border-blue-500" />
+                </div>
+              </div>
+            </div>
+
+            <!-- Mobile Cards -->
+            <div id="ordersList" class="mt-4 space-y-3"></div>
+
+            <!-- Desktop Table -->
+            <div class="hidden lg:block mt-6 overflow-auto rounded-2xl border border-slate-200">
+              <table class="w-full text-sm bg-white">
+                <thead class="bg-slate-50 text-slate-600">
+                  <tr class="text-left">
+                    <th class="p-3 font-extrabold">Order No</th>
+                    <th class="p-3 font-extrabold">Date</th>
+                    <th class="p-3 font-extrabold">Site</th>
+                    <th class="p-3 font-extrabold">Grade</th>
+                    <th class="p-3 font-extrabold">Qty</th>
+                    <th class="p-3 font-extrabold">Status</th>
+                  </tr>
+                </thead>
+                <tbody id="ordersTbody"></tbody>
+              </table>
+            </div>
+
+            <div class="mt-4 flex flex-col sm:flex-row sm:items-center gap-3">
+              <div class="flex items-center gap-2">
+                <button id="btnPrev" class="h-10 px-4 rounded-2xl bg-white border border-slate-200 font-extrabold text-slate-700">Prev</button>
+                <button id="btnNext" class="h-10 px-4 rounded-2xl bg-white border border-slate-200 font-extrabold text-slate-700">Next</button>
+              </div>
+              <div id="pageInfo" class="text-xs text-slate-500 font-bold">Page 1</div>
+              <div class="sm:ml-auto flex items-center gap-2">
+                <div class="text-xs font-bold text-slate-500 uppercase tracking-wider">Page size</div>
+                <select id="pageSize" class="h-10 rounded-2xl border border-slate-200 bg-white px-3 text-sm font-semibold">
+                  <option value="10">10</option>
+                  <option value="20">20</option>
+                  <option value="50">50</option>
+                </select>
+              </div>
+            </div>
+
+            <div id="errBox" class="hidden mt-4 rounded-2xl border border-rose-200 bg-rose-50 p-3 text-sm text-rose-800"></div>
+          </div>
+        </div>
+      </main>
+
+      <nav class="md:hidden fixed bottom-0 left-0 right-0 z-20 bg-white border-t border-slate-200">
+        <div class="grid grid-cols-3 h-14">
+          <a href="dashboard.html" data-nav="dashboard" class="flex flex-col items-center justify-center gap-1 text-xs font-bold text-slate-600">
+            <span class="text-lg">&#x1F3E0;</span>
+            <span>Dashboard</span>
+          </a>
+          <a href="new-order.html" data-nav="neworder" class="flex flex-col items-center justify-center gap-1 text-xs font-bold text-slate-600">
+            <span class="text-lg">&#x2795;</span>
+            <span>New Order</span>
+          </a>
+          <a href="orders.html" data-nav="orders" class="flex flex-col items-center justify-center gap-1 text-xs font-bold text-slate-600">
+            <span class="text-lg">&#x1F4C4;</span>
+            <span>Orders</span>
+          </a>
+        </div>
+      </nav>
+    </div>
+  </div>
+
+  <script src="app.js"></script>
+  <script>
+    TGApp.initShell('orders');
+
+    let ALL = [];
+    let ACTIVE = 'new';
+    let PAGE_NO = 1;
+    let PAGE_SIZE = 10;
+    let HAS_MORE = true;
+    let TOTAL_COUNT = null;
+
+    const tabs = {
+      new: 'New',
+      approved: 'Approved',
+      rescheduled: 'Rescheduled',
+      rejected: 'Rejected',
+      all: 'All'
+    };
+
+    const STATUS_LABELS = {
+      0: 'New',
+      1: 'Approved',
+      2: 'Rescheduled',
+      3: 'Rejected'
+    };
+
+    function showError(msg){
+      const b=$('errBox');
+      b.textContent=msg;
+      b.classList.remove('hidden');
+    }
+    function hideError(){
+      const b=$('errBox');
+      b.textContent='';
+      b.classList.add('hidden');
+    }
+
+    function badgeClass(status){
+      const s=(status||'').toLowerCase();
+      if(s==='approved') return 'border-emerald-200 bg-emerald-50 text-emerald-800';
+      if(s==='rejected') return 'border-rose-200 bg-rose-50 text-rose-800';
+      if(s==='rescheduled') return 'border-amber-200 bg-amber-50 text-amber-900';
+      return 'border-blue-200 bg-blue-50 text-blue-800';
+    }
+
+    function formatDate(val){
+      if(!val) return '-';
+      if(typeof val === 'string'){
+        if(val.includes('T')) return val.split('T')[0];
+        return val;
+      }
+      const d = new Date(val);
+      if(Number.isNaN(d.getTime())) return String(val);
+      const yyyy = d.getFullYear();
+      const mm = String(d.getMonth()+1).padStart(2,'0');
+      const dd = String(d.getDate()).padStart(2,'0');
+      return `${yyyy}-${mm}-${dd}`;
+    }
+
+    function formatQueryDate(val){
+      if(!val) return '';
+      const d = new Date(val);
+      if(Number.isNaN(d.getTime())) return '';
+      const months = ['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec'];
+      const dd = String(d.getDate()).padStart(2,'0');
+      const mmm = months[d.getMonth()];
+      const yyyy = d.getFullYear();
+      return `${dd}-${mmm}-${yyyy}`;
+    }
+
+    function statusNameFrom(row){
+      const statusName = row.STATUSNAME ?? row.statusName;
+      if(statusName) return statusName;
+      const code = row.STATUS ?? row.status ?? row.statusCode ?? row.Status;
+      if(code == null) return 'New';
+      const num = Number(code);
+      if(!Number.isNaN(num)) return STATUS_LABELS[num] || String(code);
+      if(typeof code === 'string' && code.trim()) return code;
+      return 'New';
+    }
+
+    function mapRow(row){
+      return {
+        orderNo: row.REQNO ?? row.reqNo ?? row.orderNo ?? '-',
+        date: formatDate(row.REQDATE ?? row.reqDate ?? row.date),
+        status: statusNameFrom(row),
+        site: row.PROJCODE ?? row.projcode ?? row.site ?? '-',
+        grade: row.MIXCODE ?? row.mixcode ?? row.grade ?? '-',
+        qty: row.QTY ?? row.qty ?? '-',
+        reqTime: row.INTTIME ?? row.reqTime ?? '-',
+        pump: row.PUMP ?? row.pump ?? '',
+        ice: row.ICE ?? row.ice ?? '',
+        eleCode: row.ELECODE ?? row.eleCode ?? '',
+        updated: row.SUPDATE ?? row.supdate ?? ''
+      };
+    }
+
+    function cardHTML(o){
+      return `
+        <div class="bg-white rounded-3xl border border-slate-200 tile-shadow p-4">
+          <div class="flex items-start justify-between gap-3">
+            <div class="min-w-0">
+              <div class="text-sm font-extrabold text-slate-800">${o.orderNo || '-'}</div>
+              <div class="text-xs text-slate-500 font-bold mt-0.5">${o.date || '-'} • ${o.site || '-'}</div>
+            </div>
+            <span class="shrink-0 px-3 py-1 rounded-full text-xs font-extrabold border ${badgeClass(o.status)}">${o.status || '-'}</span>
+          </div>
+
+          <div class="mt-3 grid grid-cols-3 gap-2 text-sm">
+            <div class="rounded-2xl bg-slate-50 border border-slate-200 p-3">
+              <div class="text-[11px] font-extrabold uppercase tracking-wider text-slate-500">Grade</div>
+              <div class="font-extrabold text-slate-800 mt-1">${o.grade || '-'}</div>
+            </div>
+            <div class="rounded-2xl bg-slate-50 border border-slate-200 p-3">
+              <div class="text-[11px] font-extrabold uppercase tracking-wider text-slate-500">Qty</div>
+              <div class="font-extrabold text-slate-800 mt-1">${o.qty || '-'}</div>
+            </div>
+            <div class="rounded-2xl bg-slate-50 border border-slate-200 p-3">
+              <div class="text-[11px] font-extrabold uppercase tracking-wider text-slate-500">Time</div>
+              <div class="font-extrabold text-slate-800 mt-1">${o.reqTime || '-'}</div>
+            </div>
+          </div>
+
+          ${o.remarks ? `<div class="mt-3 text-xs text-slate-600 font-semibold"><span class="font-extrabold">Remarks:</span> ${o.remarks}</div>` : ''}
+
+          <div class="mt-4 flex gap-2">
+            <button class="h-10 px-4 rounded-2xl bg-white border border-slate-200 font-extrabold text-slate-700"
+                    onclick="viewOrder('${o.orderNo || ''}')">View</button>
+            <button class="h-10 px-4 rounded-2xl bg-slate-900 text-white font-extrabold"
+                    onclick="trackOrder('${o.orderNo || ''}')">Track</button>
+          </div>
+        </div>
+      `;
+    }
+
+    function rowHTML(o){
+      return `
+        <tr class="border-t">
+          <td class="p-3 font-extrabold text-slate-800">${o.orderNo || '-'}</td>
+          <td class="p-3 text-slate-600 font-semibold">${o.date || '-'}</td>
+          <td class="p-3 text-slate-600 font-semibold">${o.site || '-'}</td>
+          <td class="p-3 text-slate-600 font-semibold">${o.grade || '-'}</td>
+          <td class="p-3 text-slate-600 font-semibold">${o.qty || '-'}</td>
+          <td class="p-3">
+            <span class="px-3 py-1 rounded-full text-xs font-extrabold border ${badgeClass(o.status)}">${o.status || '-'}</span>
+          </td>
+        </tr>
+      `;
+    }
+
+    function applyTabsUI(){
+      document.querySelectorAll('.tabBtn').forEach(btn => {
+        const key = btn.getAttribute('data-tab');
+        const isOn = key === ACTIVE;
+        btn.className = 'tabBtn px-4 h-10 rounded-2xl font-extrabold text-sm ' +
+          (isOn ? 'bg-blue-600 text-white tile-shadow' : 'bg-slate-50 text-slate-700 border border-slate-200');
+      });
+    }
+
+    function filtered(){
+      const q = ($('txtSearch').value || '').trim().toLowerCase();
+      const wanted = tabs[ACTIVE];
+      return (ALL || []).filter(o => {
+        const matchTab = (ACTIVE === 'all') ? true : ((o.status || '') === wanted);
+        if(!matchTab) return false;
+        if(!q) return true;
+        const hay = `${o.orderNo||''} ${o.site||''} ${o.grade||''}`.toLowerCase();
+        return hay.includes(q);
+      });
+    }
+
+    function render(){
+      applyTabsUI();
+      const list = filtered();
+      $('ordersList').innerHTML = list.map(cardHTML).join('') || `
+        <div class="rounded-3xl border border-slate-200 bg-white p-6 text-center text-slate-600 font-semibold">
+          No orders found
+        </div>
+      `;
+      $('ordersTbody').innerHTML = list.map(rowHTML).join('');
+    }
+
+    function getCusCode(){
+      return localStorage.getItem('custtomercode')
+        || localStorage.getItem('customerCode')
+        || localStorage.getItem('cusCode')
+        || '';
+    }
+
+    function extractRows(data){
+      if(Array.isArray(data)) return data;
+      if(!data) return [];
+      if(Array.isArray(data.data)) return data.data;
+      if(Array.isArray(data.items)) return data.items;
+      if(Array.isArray(data.rows)) return data.rows;
+      if(Array.isArray(data.orders)) return data.orders;
+      return [];
+    }
+
+    function extractTotal(data){
+      if(!data || Array.isArray(data)) return null;
+      const keys = ['total','Total','totalCount','TotalCount','TOTAL','TotalRecords'];
+      for(const k of keys){
+        if(data[k] != null && !Number.isNaN(Number(data[k]))) return Number(data[k]);
+      }
+      return null;
+    }
+
+    function setPagerUI(){
+      const info = $('pageInfo');
+      const prev = $('btnPrev');
+      const next = $('btnNext');
+      const totalText = (TOTAL_COUNT != null) ? ` of ${Math.max(1, Math.ceil(TOTAL_COUNT / PAGE_SIZE))}` : '';
+      if(info) info.textContent = `Page ${PAGE_NO}${totalText}`;
+      if(prev) prev.disabled = PAGE_NO <= 1;
+      if(next) next.disabled = !HAS_MORE;
+    }
+
+    function buildQuery(){
+      const params = new URLSearchParams();
+      const ucode = localStorage.getItem('userCode') || '';
+      if(ucode) params.set('UCODE', ucode);
+      const reqNo = ($('txtSearch').value || '').trim();
+      if(reqNo) params.set('ReqNo', reqNo);
+      const cusCode = getCusCode();
+      if(cusCode) params.set('CusCode', cusCode);
+      if(ACTIVE !== 'all'){
+        const statusMap = { new: 0, approved: 1, rescheduled: 2, rejected: 3 };
+        if(statusMap[ACTIVE] != null) params.set('Status', String(statusMap[ACTIVE]));
+      }
+      const fromDate = formatQueryDate($('fromDate')?.value || '');
+      if(fromDate) params.set('FromDate', fromDate);
+      const toDate = formatQueryDate($('toDate')?.value || '');
+      if(toDate) params.set('ToDate', toDate);
+      const sortField = null;
+      const sortOrder = null;
+      if(sortField != null) params.set('SortField', String(sortField));
+      if(sortOrder != null) params.set('SortOrder', String(sortOrder));
+      params.set('PageNo', String(PAGE_NO));
+      params.set('PageSize', String(PAGE_SIZE));
+      return params.toString();
+    }
+
+    async function load(){
+      hideError();
+      const qs = buildQuery();
+      const data = await TGApp.apiGet(`/GetRequest?${qs}`);
+      if(!data){ showError('Unable to load orders'); return; }
+
+      const rows = extractRows(data);
+      TOTAL_COUNT = extractTotal(data);
+      ALL = rows.map(mapRow);
+      HAS_MORE = TOTAL_COUNT != null ? (PAGE_NO * PAGE_SIZE) < TOTAL_COUNT : rows.length === PAGE_SIZE;
+      setPagerUI();
+      render();
+    }
+
+    $('btnRefresh').addEventListener('click', () => { PAGE_NO = 1; load(); });
+    $('txtSearch').addEventListener('input', () => {
+      PAGE_NO = 1;
+      clearTimeout(window.__searchT);
+      window.__searchT = setTimeout(load, 350);
+    });
+    $('fromDate').addEventListener('change', () => {
+      PAGE_NO = 1;
+      load();
+    });
+    $('toDate').addEventListener('change', () => {
+      PAGE_NO = 1;
+      load();
+    });
+    $('btnPrev').addEventListener('click', () => {
+      if(PAGE_NO > 1){ PAGE_NO -= 1; load(); }
+    });
+    $('btnNext').addEventListener('click', () => {
+      if(HAS_MORE){ PAGE_NO += 1; load(); }
+    });
+    $('pageSize').addEventListener('change', (e) => {
+      PAGE_SIZE = Number(e.target.value || 10);
+      PAGE_NO = 1;
+      load();
+    });
+
+    document.querySelectorAll('.tabBtn').forEach(btn => {
+      btn.addEventListener('click', () => {
+        ACTIVE = btn.getAttribute('data-tab');
+        PAGE_NO = 1;
+        load();
+      });
+    });
+
+    // Read query param tab
+    (function(){
+      const params = new URLSearchParams(location.search);
+      const tab = (params.get('tab') || '').toLowerCase();
+      if(tab === 'current') ACTIVE = 'new';
+      else if(tabs[tab]) ACTIVE = tab;
+    })();
+
+    window.viewOrder = (no) => TGApp.toast('View: ' + no + ' (hook your details page)', 'info');
+    window.trackOrder = (no) => TGApp.toast('Track: ' + no + ' (hook GPS tracking)', 'info');
+
+    $('pageSize').value = String(PAGE_SIZE);
+    setPagerUI();
+    load();
+  </script>
+</body>
+</html>

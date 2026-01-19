@@ -1,0 +1,332 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <link rel="manifest" href="manifest.json">
+  <link rel="icon" href="assets/logo.png">
+  <meta name="theme-color" content="#2563eb">
+  <script src="https://cdn.tailwindcss.com"></script>
+  <title>Login - Transgulf Readymix</title>
+</head>
+
+<body class="min-h-screen bg-slate-50">
+  <div id="toast" class="hidden"></div>
+  <!-- Top safe area -->
+  <div class="min-h-screen flex">
+    <!-- LEFT: Brand panel (hidden on mobile) -->
+    <aside class="hidden lg:flex lg:w-[44%] xl:w-[46%] relative overflow-hidden">
+      <div class="absolute inset-0 bg-gradient-to-br from-green-600 via-green-700 to-slate-900"></div>
+      <div class="absolute -top-24 -left-24 w-80 h-80 rounded-full bg-white/15 blur-2xl"></div>
+      <div class="absolute -bottom-24 -right-24 w-80 h-80 rounded-full bg-white/10 blur-2xl"></div>
+
+      <div class="relative z-10 p-10 text-white flex flex-col justify-between w-full">
+        <div>
+          <div class="inline-flex items-center gap-3">
+            <div class="w-11 h-11 rounded-2xl bg-white/15 border border-white/20 flex items-center justify-center text-xl">
+              <img  src="assets/logo.png" alt="Logo" class="w-8 h-8">
+            </div>
+            <div>
+              <div class="text-xl font-extrabold leading-tight">Transgulf</div>
+              <div class="text-sm uppercase tracking-widest text-white/80 font-bold">Readymix</div>
+            </div>
+          </div>
+
+          <h1 class="mt-10 text-4xl font-extrabold leading-[1.1]">
+            ENGINEERED FOR YOU
+          </h1>
+          <p class="mt-4 text-white/80 max-w-md">
+            Transgulf Readymix Concrete Co. traces its roots from a concrete foundation of values and culture, reinforced by commitment, competent people and system based on continuous improvement. In 1997, the company was established by a well experienced team implementing a system that is designed and inspired around customer satisfaction.
+          </p>
+
+          <div class="mt-10 grid grid-cols-2 gap-4 max-w-md">
+            <div class="rounded-3xl bg-white/10 border border-white/15 p-5">
+              <div class="text-sm font-bold">Mission</div>
+              <div class="text-white/75 text-sm mt-1"> -Provide high quality concrete and premium service at reasonable price
+ <br/>-Ensure the highest level of satisfaction among all our stakeholders
+ <br/>-Be an integral part of the community
+ <br/>-Maintain our strong commitment to environment protection</div>
+            </div>
+            <div class="rounded-3xl bg-white/10 border border-white/15 p-5">
+              <div class="text-sm font-bold">Vision</div>
+              <div class="text-white/75 text-sm mt-1">Your preferred supplier, employer and customer in the ready-mix industry.</div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </aside>
+
+    <!-- RIGHT: Login card -->
+    <main class="flex-1 flex items-center justify-center p-4 sm:p-8">
+      <div class="w-full max-w-md">
+        <!-- Mobile brand header -->
+        <div class="lg:hidden mb-6">
+          <div class="flex items-center gap-3">
+            <div class="w-11 h-11 rounded-2xl bg-blue-600 text-white flex items-center justify-center text-xl shadow">
+              TR
+            </div>
+            <div>
+              <div class="text-xs uppercase tracking-widest text-slate-500 font-bold">Transgulf</div>
+              <div class="text-lg font-extrabold leading-tight text-slate-900">Readymix</div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Card -->
+        <div class="bg-white rounded-[28px] shadow-xl border border-slate-100 overflow-hidden">
+          <!-- Card top -->
+          <div class="p-6 sm:p-8 border-b border-slate-100">
+            <h2 class="text-2xl sm:text-3xl font-extrabold tracking-tight text-slate-900">Welcome</h2>
+            <p class="text-slate-500 mt-1">Sign in to continue</p>
+
+            <!-- Status row -->
+            <div class="mt-4 flex items-center gap-2">
+              <span id="netDot" class="w-2.5 h-2.5 rounded-full bg-emerald-500"></span>
+              <span id="netText" class="text-xs font-bold text-slate-500 uppercase tracking-wider">Online</span>
+
+              <button id="installBtn" class="ml-auto hidden text-xs font-bold text-blue-600 hover:text-blue-700">
+                Install
+              </button>
+            </div>
+            <div id="installHint" class="mt-2 hidden text-[11px] font-semibold text-slate-500">
+              Install from your browser menu (Add to Home Screen).
+            </div>
+          </div>
+
+          <div class="p-6 sm:p-8">
+            <form id="loginForm" class="space-y-4" autocomplete="on">
+              <div>
+                <label class="block text-xs font-extrabold text-slate-600 mb-1 uppercase tracking-wider">Email</label>
+                <input
+                  id="email"
+                  type="email"
+                  inputmode="email"
+                  autocomplete="username"
+                  placeholder="you@company.com"
+                  class="w-full h-12 rounded-2xl border border-slate-200 bg-slate-50 px-4 text-sm focus:outline-none focus:ring-4 focus:ring-blue-500/15 focus:border-blue-500"
+                />
+              </div>
+
+              <div>
+                <label class="block text-xs font-extrabold text-slate-600 mb-1 uppercase tracking-wider">Password</label>
+                <div class="relative">
+                  <input
+                    id="password"
+                    type="password"
+                    autocomplete="current-password"
+                    placeholder="••••••••"
+                    class="w-full h-12 rounded-2xl border border-slate-200 bg-slate-50 px-4 pr-12 text-sm focus:outline-none focus:ring-4 focus:ring-blue-500/15 focus:border-blue-500"
+                  />
+                  <button
+                    type="button"
+                    id="togglePwd"
+                    class="absolute right-2 top-1/2 -translate-y-1/2 w-9 h-9 rounded-xl hover:bg-slate-100 text-slate-500"
+                    aria-label="Show password"
+                    title="Show/Hide"
+                  >
+                    👁️
+                  </button>
+                </div>
+              </div>
+
+              <div class="flex items-center justify-between gap-3">
+                <label class="flex items-center gap-2 text-sm text-slate-600 select-none">
+                  <input id="remember" type="checkbox" class="w-4 h-4 rounded border-slate-300">
+                  Remember me
+                </label>                
+              </div>
+
+              <button
+                id="btnLogin"
+                type="submit"
+                class="w-full h-12 rounded-2xl bg-blue-600 text-white font-extrabold shadow-lg hover:bg-blue-700 active:scale-[0.99] transition disabled:opacity-60 disabled:cursor-not-allowed"
+              >
+                <span id="btnText">Login</span>
+              </button>
+             
+            </form>
+          </div>
+
+          <!-- Card bottom -->
+          <div class="px-6 sm:px-8 py-4 bg-slate-50 border-t border-slate-100 flex items-center justify-between">
+            <div class="text-xs text-slate-500">
+              Version <span class="font-bold text-slate-700">v1</span>
+            </div>
+            <button type="button" id="clearSession" class="text-xs font-bold text-red-600 hover:text-red-700">
+              Clear session
+            </button>
+          </div>
+        </div>
+
+        <!-- small footer -->
+        <div class="mt-6 text-center text-xs text-slate-400">
+          © <span id="yr"></span> Transgulf Readymix. All rights reserved.
+        </div>
+      </div>
+    </main>
+  </div>
+
+  <!-- iOS install guide -->
+  <div id="installModal" class="fixed inset-0 z-50 hidden">
+    <div id="installBackdrop" class="absolute inset-0 bg-slate-900/50"></div>
+    <div class="absolute inset-x-0 bottom-0 sm:inset-0 sm:m-auto sm:max-w-md">
+      <div class="m-4 sm:m-0 bg-white rounded-3xl shadow-2xl border border-slate-100 p-6">
+        <div class="flex items-start justify-between gap-4">
+          <div>
+            <div class="text-lg font-extrabold text-slate-900">Install on iPhone</div>
+            <div class="text-sm text-slate-500 mt-1">Add Transgulf Readymix to your Home Screen.</div>
+          </div>
+          <button id="installClose" class="w-9 h-9 rounded-xl text-slate-500 hover:bg-slate-100" aria-label="Close">
+            X
+          </button>
+        </div>
+        <ol class="mt-4 text-sm text-slate-700 space-y-2 list-decimal list-inside">
+          <li>Open in Safari.</li>
+          <li>Tap the Share button.</li>
+          <li>Choose "Add to Home Screen".</li>
+        </ol>
+      </div>
+    </div>
+  </div>
+
+  <script src="app.js"></script>
+  <script>
+    // ======= Online / Offline indicator =======
+    function updateNetworkUI() {
+      TGApp.setNetworkBadge();
+      if (!navigator.onLine) TGApp.toast("You are offline. Login will work only for remembered sessions.", 'warn');
+    }
+    window.addEventListener('online', updateNetworkUI);
+    window.addEventListener('offline', updateNetworkUI);
+
+    // ======= PWA install prompt (login page) =======
+    let deferredPrompt = null;
+    const installButton = $('installBtn');
+    const installModal = $('installModal');
+    const installBackdrop = $('installBackdrop');
+    const installClose = $('installClose');
+    window.addEventListener('beforeinstallprompt', (e) => {
+      e.preventDefault(); // Prevent default browser bar
+      deferredPrompt = e;  // Save the event for later
+      if (installButton) installButton.classList.remove('hidden');
+    });
+
+    installButton?.addEventListener('click', async () => {
+      if (deferredPrompt) {
+        deferredPrompt.prompt(); // Show the install prompt
+        const { outcome } = await deferredPrompt.userChoice;
+        console.log(`User response: ${outcome}`);
+        deferredPrompt = null; // Can only be used once
+        installButton.classList.add('hidden');
+      } else if (installModal) {
+        installModal.classList.remove('hidden');
+      }
+    });
+
+    // ======= Password toggle =======
+    $('togglePwd').addEventListener('click', () => {
+      const inp = $('password');
+      inp.type = inp.type === "password" ? "text" : "password";
+      $('togglePwd').textContent = inp.type === "password" ? "👁️" : "🙈";
+    });
+
+    // ======= Clear session =======
+    $('clearSession').addEventListener('click', () => {
+      localStorage.clear();
+      TGApp.toast("Session cleared.", 'ok');
+      $('password').value = "";
+    });
+
+    // ======= Submit login =======
+    $('loginForm').addEventListener('submit', async (e) => {
+      e.preventDefault();
+
+      const email = $('email').value.trim();
+      const password = $('password').value;
+
+      if (!email) { TGApp.toast("Please enter email", 'err'); $('email').focus(); return; }
+      if (!password) { TGApp.toast("Please enter password", 'err'); $('password').focus(); return; }
+
+      // If offline: allow only existing token
+      if (!navigator.onLine) {
+        const token = localStorage.getItem('userToken');
+        if (token) {
+          window.location.href = 'dashboard.html';
+          return;
+        }
+        TGApp.toast("Offline: no existing session found. Connect to internet for first login.", 'warn');
+        return;
+      }
+
+      TGApp.setBusy(true);
+      try {        
+        var res = await TGApp.apiPost('/gettoken', { USERNAME: email, PASSWORD: password });
+        if (!res) {
+          TGApp.toast("Network error. Please try again.", 'err');
+          return;
+        }
+
+        let data = res;
+        if (Array.isArray(data)) data = data[0];
+        console.log('Processed login data:', data);
+
+        if (!data || !data.TOKEN) {
+          TGApp.toast("Login failed", 'err');
+          return;
+        }
+
+        // Save session
+        localStorage.setItem('userToken', data.TOKEN);        
+        localStorage.setItem('userName', data.EMAIL);
+        localStorage.setItem('userCode', data.UCODE);
+        localStorage.setItem('cusCode', data.CCODE);
+        localStorage.setItem('cusName', data.CNAME);
+        localStorage.setItem('userRole', 'ADMIN');
+        TGApp.persistRemembered(email);
+
+        TGApp.toast("Login successful. Redirecting…", 'ok');
+        setTimeout(() => (window.location.href = 'dashboard.html'), 300);
+
+      } catch (err) {
+        console.error('Login error:', err);
+        TGApp.toast("Network error. Please try again.", 'err');
+      } finally {
+        TGApp.setBusy(false);
+      }
+    });
+
+    // ======= On load =======
+    document.addEventListener('DOMContentLoaded', () => {
+      $('yr').textContent = new Date().getFullYear();
+
+      // If already logged in, jump to dashboard
+      const token = localStorage.getItem('userToken');
+      if (token) window.location.href = 'dashboard.html';
+
+      TGApp.loadRemembered();
+      updateNetworkUI();
+
+      const isStandalone = window.matchMedia('(display-mode: standalone)').matches || window.navigator.standalone === true;
+      const isIOS = /iPhone|iPad|iPod/i.test(navigator.userAgent);
+      const hint = $('installHint');
+      if (hint && !isStandalone) {
+        hint.textContent = isIOS
+          ? 'Install from Safari: Share > Add to Home Screen.'
+          : 'Install from your browser menu (Add to Home Screen).';
+        hint.classList.remove('hidden');
+      }
+
+      if (isIOS && !isStandalone && installButton) {
+        installButton.classList.remove('hidden');
+      }
+    });
+
+    // ======= iOS install modal =======
+    function closeInstallModal() {
+      installModal?.classList.add('hidden');
+    }
+    installBackdrop?.addEventListener('click', closeInstallModal);
+    installClose?.addEventListener('click', closeInstallModal);
+  </script>
+</body>
+</html>

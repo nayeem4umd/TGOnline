@@ -1,0 +1,41 @@
+{
+  "name": "Transgulf Readymix",
+  "short_name": "TG",
+  "start_url": "./index.html",
+  "display": "standalone",
+  "background_color": "#fbf2f4",
+  "theme_color": "#2563eb",
+  "icons": [
+    {
+      "src": "assets/icon-144.png",
+      "sizes": "144x144",
+      "type": "image/png",
+      "purpose": "any"
+    },
+    {
+      "src": "assets/icon-192.png",
+      "sizes": "192x192",
+      "type": "image/png",
+      "purpose": "any"
+    },
+    {
+      "src": "assets/icon-512.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "any"
+    }
+  ],
+  "screenshots": [
+    {
+      "src": "assets/screenshot-wide.png",
+      "sizes": "1280x720",
+      "type": "image/png",
+      "form_factor": "wide"
+    },
+    {
+      "src": "assets/screenshot-mobile.png",
+      "sizes": "720x1280",
+      "type": "image/png"
+    }
+  ]
+}

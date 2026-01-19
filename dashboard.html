@@ -1,0 +1,202 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <link rel="manifest" href="manifest.json" />
+  <link rel="icon" href="assets/logo.png" />
+  <meta name="theme-color" content="#2563eb" />
+  <script src="https://cdn.tailwindcss.com"></script>
+  <title>TRANSGULF - Dashboard</title>
+  <style>
+    body { background: #fbf2f4; }
+    .tile-shadow { box-shadow: 0 10px 22px rgba(15, 23, 42, 0.10); }
+  </style>
+</head>
+<body class="min-h-screen">
+  <div id="toast" class="hidden"></div>
+
+  <!-- Mobile Drawer -->
+  <div id="drawerBackdrop" class="hidden fixed inset-0 bg-black/35 z-30"></div>
+  <aside id="drawer" class="fixed top-0 left-0 bottom-0 w-[280px] bg-white z-40 -translate-x-full transition-transform duration-200 tile-shadow">
+    <div class="p-4 border-b">
+      <div class="flex items-center justify-between">
+        <div class="font-extrabold tracking-[0.14em] text-slate-800">TRANSGULF</div>
+        <button id="btnCloseDrawer" class="w-10 h-10 rounded-xl hover:bg-slate-100">✕</button>
+      </div>
+      <div class="mt-2 text-xs text-slate-500 font-bold" id="hdrMeta">-</div>
+      <div class="text-sm font-extrabold text-slate-800" id="hdrUser">User</div>
+    </div>
+    <nav class="p-3 space-y-2">
+      <a href="dashboard.html" data-nav="dashboard" class="w-full flex items-center gap-3 px-4 h-11 rounded-2xl font-extrabold text-slate-700 hover:bg-slate-100"><span class="text-lg">🏠</span>Dashboard</a>
+      <a href="new-order.html" data-nav="neworder" class="w-full flex items-center gap-3 px-4 h-11 rounded-2xl font-extrabold text-slate-700 hover:bg-slate-100"><span class="text-lg">➕</span>New Order</a>
+      <a href="orders.html" data-nav="orders" class="w-full flex items-center gap-3 px-4 h-11 rounded-2xl font-extrabold text-slate-700 hover:bg-slate-100"><span class="text-lg">📄</span>Orders</a>
+      <a href="calculator.html" data-nav="calculator" class="w-full flex items-center gap-3 px-4 h-11 rounded-2xl font-extrabold text-slate-700 hover:bg-slate-100"><span class="text-lg">🧮</span>Calculator</a>
+      <a href="profile.html" data-nav="profile" class="w-full flex items-center gap-3 px-4 h-11 rounded-2xl font-extrabold text-slate-700 hover:bg-slate-100"><span class="text-lg">👤</span>Profile</a>
+    </nav>
+    <div class="p-4 border-t mt-auto">
+      <button id="btnLogout" class="w-full h-11 rounded-2xl bg-rose-600 text-white font-extrabold">Logout</button>
+    </div>
+  </aside>
+
+  <div class="flex min-h-screen">
+    <!-- Desktop Sidebar -->
+    <aside class="hidden md:flex md:w-[270px] bg-white border-r">
+      <div class="w-full flex flex-col">
+        <div class="p-5 border-b">
+          <div class="font-extrabold tracking-[0.18em] text-slate-800">TRANSGULF</div>
+          <div class="mt-2 text-xs text-slate-500 font-bold" id="hdrMeta">-</div>
+          <div class="text-sm font-extrabold text-slate-800" id="hdrUser">User</div>
+
+          <div class="mt-4 flex items-center gap-2">
+            <span id="netDot" class="w-2.5 h-2.5 rounded-full bg-emerald-500"></span>
+            <span id="netText" class="text-xs font-extrabold uppercase tracking-wider text-slate-500">Online</span>
+            <button id="installBtn" class="ml-auto hidden text-xs font-extrabold text-blue-600 hover:text-blue-700">Install</button>
+          </div>
+        </div>
+
+        <nav class="p-3 space-y-2">
+          <a href="dashboard.html" data-nav="dashboard" class="w-full flex items-center gap-3 px-4 h-11 rounded-2xl font-bold text-slate-700 hover:bg-slate-100"><span class="text-lg">🏠</span>Dashboard</a>
+          <a href="new-order.html" data-nav="neworder" class="w-full flex items-center gap-3 px-4 h-11 rounded-2xl font-bold text-slate-700 hover:bg-slate-100"><span class="text-lg">➕</span>New Order</a>
+          <a href="orders.html" data-nav="orders" class="w-full flex items-center gap-3 px-4 h-11 rounded-2xl font-bold text-slate-700 hover:bg-slate-100"><span class="text-lg">📄</span>Orders</a>
+          <a href="calculator.html" data-nav="calculator" class="w-full flex items-center gap-3 px-4 h-11 rounded-2xl font-bold text-slate-700 hover:bg-slate-100"><span class="text-lg">🧮</span>Calculator</a>
+          <a href="profile.html" data-nav="profile" class="w-full flex items-center gap-3 px-4 h-11 rounded-2xl font-bold text-slate-700 hover:bg-slate-100"><span class="text-lg">👤</span>Profile</a>
+        </nav>
+
+        <div class="p-4 border-t mt-auto">
+          <button id="btnLogout" class="w-full h-11 rounded-2xl bg-rose-600 text-white font-extrabold">Logout</button>
+        </div>
+      </div>
+    </aside>
+
+    <!-- Main -->
+    <div class="flex-1 min-w-0">
+      <!-- Mobile top bar -->
+      <header class="md:hidden sticky top-0 z-20 bg-[#fbf2f4]">
+        <div class="px-4 pt-4 pb-3">
+          <div class="relative flex items-center justify-between">
+            <button id="btnMenu" class="w-10 h-10 rounded-xl flex items-center justify-center active:scale-95">
+              <span class="text-2xl leading-none">☰</span>
+            </button>
+            <div class="absolute left-1/2 -translate-x-1/2 text-center">
+              <div class="text-base font-extrabold tracking-[0.18em] text-slate-800">Transgulf</div>
+            </div>
+            <button id="installBtn" class="hidden w-10 h-10 rounded-xl flex items-center justify-center text-xs font-extrabold text-blue-700 border border-blue-200 bg-white">Install</button>
+          </div>
+
+          <div class="mt-3 flex items-center gap-2">
+            <span id="netDot" class="w-2.5 h-2.5 rounded-full bg-emerald-500"></span>
+            <span id="netText" class="text-xs font-extrabold uppercase tracking-wider text-slate-500">Online</span>
+            <div class="ml-auto text-xs text-slate-500 font-bold" id="hdrMeta">-</div>
+          </div>
+        </div>
+      </header>
+
+      <main class="px-4 md:px-8 pb-24 md:pb-10 pt-4 md:pt-8 max-w-6xl mx-auto">
+        <div class="mb-4 text-sm text-slate-700">
+          <span class="font-medium">Welcome,</span>
+          <span id="companyName" class="font-semibold">-</span>
+        </div>
+
+        <div class="flex items-center justify-between mb-4">
+          <div class="text-lg font-extrabold text-slate-800">Quick Actions</div>
+          <button id="btnBell" class="relative w-10 h-10 rounded-xl bg-white border border-slate-200 flex items-center justify-center tile-shadow active:scale-95">
+            🔔
+            <span id="bellDot" class="hidden absolute top-2 right-2 w-2.5 h-2.5 rounded-full bg-red-500 ring-2 ring-[#fbf2f4]"></span>
+          </button>
+        </div>
+
+        <div id="tilesGrid" class="grid grid-cols-2 gap-4"></div>
+
+        <div class="mt-6 bg-white rounded-3xl border border-slate-200 p-5 tile-shadow">
+          <div class="flex items-center justify-between">
+            <div>
+              <div class="text-sm font-extrabold text-slate-800">Today</div>
+              <div class="text-xs text-slate-500 font-bold">Demo KPI (replace with API)</div>
+            </div>
+            <div class="text-right">
+              <div class="text-xs text-slate-500 font-bold">Orders</div>
+              <div id="kpiOrders" class="text-2xl font-extrabold text-slate-800">-</div>
+            </div>
+          </div>
+
+          <div class="mt-4 grid grid-cols-3 gap-3">
+            <div class="rounded-2xl bg-slate-50 border border-slate-200 p-3">
+              <div class="text-[11px] font-extrabold uppercase tracking-wider text-slate-500">Current</div>
+              <div id="kpiCur" class="text-lg font-extrabold text-slate-800 mt-1">-</div>
+            </div>
+            <div class="rounded-2xl bg-slate-50 border border-slate-200 p-3">
+              <div class="text-[11px] font-extrabold uppercase tracking-wider text-slate-500">Approved</div>
+              <div id="kpiApp" class="text-lg font-extrabold text-slate-800 mt-1">-</div>
+            </div>
+            <div class="rounded-2xl bg-slate-50 border border-slate-200 p-3">
+              <div class="text-[11px] font-extrabold uppercase tracking-wider text-slate-500">Rejected</div>
+              <div id="kpiRej" class="text-lg font-extrabold text-slate-800 mt-1">-</div>
+            </div>
+          </div>
+        </div>
+
+        <div id="errBox" class="hidden mt-4 rounded-2xl border border-rose-200 bg-rose-50 p-3 text-sm text-rose-800"></div>
+      </main>
+
+      <nav class="md:hidden fixed bottom-0 left-0 right-0 z-20 bg-white border-t border-slate-200">
+        <div class="grid grid-cols-3 h-14">
+          <a href="dashboard.html" data-nav="dashboard" class="flex flex-col items-center justify-center gap-1 text-xs font-bold text-slate-600">
+            <span class="text-lg">&#x1F3E0;</span>
+            <span>Dashboard</span>
+          </a>
+          <a href="new-order.html" data-nav="neworder" class="flex flex-col items-center justify-center gap-1 text-xs font-bold text-slate-600">
+            <span class="text-lg">&#x2795;</span>
+            <span>New Order</span>
+          </a>
+          <a href="orders.html" data-nav="orders" class="flex flex-col items-center justify-center gap-1 text-xs font-bold text-slate-600">
+            <span class="text-lg">&#x1F4C4;</span>
+            <span>Orders</span>
+          </a>
+        </div>
+      </nav>
+    </div>
+  </div>
+
+  <script src="app.js"></script>
+  <script>
+    TGApp.initShell('dashboard');
+
+    function tileHTML(item){
+      const activeBg = item.active ? "bg-[#d9ecff]" : "bg-white";
+      return `
+        <a href="${item.route || '#'}" class="relative ${activeBg} rounded-2xl border border-slate-200 tile-shadow p-4 h-[112px] text-left active:scale-[0.99] transition block">
+          <div class="text-[13px] font-semibold text-slate-700 leading-tight pr-6">${item.title || ''}</div>
+          <div class="mt-3 flex items-end justify-between">
+            <div class="w-10 h-10 rounded-xl bg-slate-50 border border-slate-200 flex items-center justify-center text-xl">${item.icon || '🚚'}</div>
+          </div>
+        </a>`;
+    }
+
+    async function loadDashboard(){
+      let data = TGApp.mock.dashboard();
+
+      $('companyName').textContent = data.companyName || '-';
+      $('bellDot').classList.toggle('hidden', !((data.notifications || 0) > 0));
+
+      const tiles = Array.isArray(data.tiles) ? data.tiles : [];
+      $('tilesGrid').innerHTML = tiles.map(tileHTML).join('');
+
+      const orders = await TGApp.apiGet('/orders', () => TGApp.mock.orders());
+      const counts = { Current:0, Approved:0, Rejected:0 };
+      (orders||[]).forEach(o => { if(counts[o.status] !== undefined) counts[o.status]++; });
+
+      $('kpiOrders').textContent = (orders||[]).length;
+      $('kpiCur').textContent = counts.Current;
+      $('kpiApp').textContent = counts.Approved;
+      $('kpiRej').textContent = counts.Rejected;
+    }
+
+    document.getElementById('btnBell').addEventListener('click', () => {
+      TGApp.toast('Notifications (connect your API)', 'info');
+    });
+
+    loadDashboard();
+  </script>
+</body>
+</html>
