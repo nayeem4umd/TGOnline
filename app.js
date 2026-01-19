@@ -18,7 +18,7 @@
 
   window.TGApp = {
     state: {
-      apiBase: 'http://192.168.12.1022/api/tp/online', // <-- replace with real base later
+      apiBase: 'http://192.168.12.102/api/tp/online', // <-- replace with real base later
       //apiBase:'http://localhost:5195/online', // <-- dev local
       token: () => localStorage.getItem('userToken') || '',
     },
@@ -244,3 +244,4 @@
     }
   };
 })();
+
