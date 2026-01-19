@@ -143,6 +143,15 @@
       if (remember && savedEmail) $('email').value = savedEmail;
     },
 
+  async isInternalNetwork() {
+    try {
+        const res = await fetch( "http://182.37.64.4:1978/api/TG/TG/ping", { method: "GET", cache: "no-store" } );
+         return res.ok;
+      } catch (e) {
+        return false;
+      }
+   },
+
     // ===== API wrappers =====
     async apiGet(path, mockFn) {
       const url = this.state.apiBase + path;
@@ -244,4 +253,5 @@
     }
   };
 })();
+
 
