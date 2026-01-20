@@ -15,110 +15,10 @@
 </head>
 
 <body class="min-h-screen">
-  <!-- Toast -->
   <div id="toast" class="hidden"></div>
-
-  <!-- Mobile Drawer -->
-  <div id="drawerBackdrop" class="hidden fixed inset-0 bg-black/35 z-30"></div>
-  <aside id="drawer" class="fixed top-0 left-0 bottom-0 w-[280px] bg-white z-40 -translate-x-full transition-transform duration-200 tile-shadow">
-    <div class="p-4 border-b">
-      <div class="flex items-center justify-between">
-        <div class="font-extrabold tracking-[0.14em] text-slate-800">TRANSGULF</div>
-        <button id="btnCloseDrawer" class="w-10 h-10 rounded-xl hover:bg-slate-100">✕</button>
-      </div>
-      <div class="mt-2 text-xs text-slate-500 font-bold" id="hdrMeta">-</div>
-      <div class="text-sm font-extrabold text-slate-800" id="hdrUser">User</div>
-    </div>
-    <nav class="p-3 space-y-2">
-      <a href="dashboard.html" data-nav="dashboard" class="w-full flex items-center gap-3 px-4 h-11 rounded-2xl font-extrabold text-slate-700 hover:bg-slate-100">
-        <span class="text-lg">🏠</span><span class="truncate">Dashboard</span>
-      </a>
-      <a href="new-order.html" data-nav="neworder" class="w-full flex items-center gap-3 px-4 h-11 rounded-2xl font-extrabold text-slate-700 hover:bg-slate-100">
-        <span class="text-lg">➕</span><span class="truncate">New Order</span>
-      </a>
-      <a href="orders.html" data-nav="orders" class="w-full flex items-center gap-3 px-4 h-11 rounded-2xl font-extrabold text-slate-700 hover:bg-slate-100">
-        <span class="text-lg">📄</span><span class="truncate">Orders</span>
-      </a>
-      <a href="calculator.html" data-nav="calculator" class="w-full flex items-center gap-3 px-4 h-11 rounded-2xl font-extrabold text-slate-700 hover:bg-slate-100">
-        <span class="text-lg">🧮</span><span class="truncate">Calculator</span>
-      </a>
-      <a href="profile.html" data-nav="profile" class="w-full flex items-center gap-3 px-4 h-11 rounded-2xl font-extrabold text-slate-700 hover:bg-slate-100">
-        <span class="text-lg">👤</span><span class="truncate">Profile</span>
-      </a>
-    </nav>
-    <div class="p-4 border-t mt-auto">
-      <button id="btnLogout" class="w-full h-11 rounded-2xl bg-rose-600 text-white font-extrabold">Logout</button>
-    </div>
-  </aside>
-
-  <div class="flex min-h-screen">
-    <!-- Desktop Sidebar -->
-    <aside class="hidden md:flex md:w-[270px] bg-white border-r">
-      <div class="w-full flex flex-col">
-        <div class="p-5 border-b">
-          <div class="font-extrabold tracking-[0.18em] text-slate-800">TRANSGULF</div>
-          <div class="mt-2 text-xs text-slate-500 font-bold" id="hdrMeta">-</div>
-          <div class="text-sm font-extrabold text-slate-800" id="hdrUser">User</div>
-
-          <div class="mt-4 flex items-center gap-2">
-            <span id="netDot" class="w-2.5 h-2.5 rounded-full bg-emerald-500"></span>
-            <span id="netText" class="text-xs font-extrabold uppercase tracking-wider text-slate-500">Online</span>
-            <button id="installBtn" class="ml-auto hidden text-xs font-extrabold text-blue-600 hover:text-blue-700">Install</button>
-          </div>
-        </div>
-
-        <nav class="p-3 space-y-2">
-          <a href="dashboard.html" data-nav="dashboard" class="w-full flex items-center gap-3 px-4 h-11 rounded-2xl font-bold text-slate-700 hover:bg-slate-100">
-            <span class="text-lg">🏠</span><span class="truncate">Dashboard</span>
-          </a>
-          <a href="new-order.html" data-nav="neworder" class="w-full flex items-center gap-3 px-4 h-11 rounded-2xl font-bold text-slate-700 hover:bg-slate-100">
-            <span class="text-lg">➕</span><span class="truncate">New Order</span>
-          </a>
-          <a href="orders.html" data-nav="orders" class="w-full flex items-center gap-3 px-4 h-11 rounded-2xl font-bold text-slate-700 hover:bg-slate-100">
-            <span class="text-lg">📄</span><span class="truncate">Orders</span>
-          </a>
-          <a href="calculator.html" data-nav="calculator" class="w-full flex items-center gap-3 px-4 h-11 rounded-2xl font-bold text-slate-700 hover:bg-slate-100">
-            <span class="text-lg">🧮</span><span class="truncate">Calculator</span>
-          </a>
-          <a href="profile.html" data-nav="profile" class="w-full flex items-center gap-3 px-4 h-11 rounded-2xl font-bold text-slate-700 hover:bg-slate-100">
-            <span class="text-lg">👤</span><span class="truncate">Profile</span>
-          </a>
-        </nav>
-
-        <div class="p-4 border-t mt-auto">
-          <button id="btnLogout" class="w-full h-11 rounded-2xl bg-rose-600 text-white font-extrabold">Logout</button>
-        </div>
-      </div>
-    </aside>
-
-    <!-- Main -->
-    <div class="flex-1 min-w-0">
-      <!-- Mobile Top bar -->
-      <header class="md:hidden sticky top-0 z-20 bg-[#fbf2f4]">
-        <div class="px-4 pt-4 pb-3">
-          <div class="relative flex items-center justify-between">
-            <button id="btnMenu" class="w-10 h-10 rounded-xl flex items-center justify-center active:scale-95">
-              <span class="text-2xl leading-none">☰</span>
-            </button>
-
-            <div class="absolute left-1/2 -translate-x-1/2 text-center">
-              <div class="text-base font-extrabold tracking-[0.18em] text-slate-800">TRANSGULF</div>
-            </div>
-
-            <button id="installBtn" class="hidden w-10 h-10 rounded-xl flex items-center justify-center text-xs font-extrabold text-blue-700 border border-blue-200 bg-white">
-              Install
-            </button>
-          </div>
-
-          <div class="mt-3 flex items-center gap-2">
-            <span id="netDot" class="w-2.5 h-2.5 rounded-full bg-emerald-500"></span>
-            <span id="netText" class="text-xs font-extrabold uppercase tracking-wider text-slate-500">Online</span>
-            <div class="ml-auto text-xs text-slate-500 font-bold" id="hdrMeta">-</div>
-          </div>
-        </div>
-      </header>
-
-      <main class="px-4 md:px-8 pb-24 md:pb-10 pt-4 md:pt-8 max-w-6xl mx-auto">
+  <div id="tgShell">
+    <div id="tgPage">
+<main class="px-4 md:px-8 pb-24 md:pb-10 pt-4 md:pt-8 w-full">
         <div class="flex items-start justify-between gap-4 mb-5">
           <div>
             <div class="text-xl md:text-2xl font-extrabold text-slate-800">Orders</div>
@@ -143,7 +43,7 @@
             <div class="flex flex-col gap-3">
               <div class="flex flex-col sm:flex-row gap-3 sm:items-center">
                 <div class="flex-1">
-                  <input id="txtSearch" type="text" placeholder="Search order no / site / grade..."
+                  <input id="txtSearch" type="text" placeholder="Search any field..."
                          class="w-full h-11 rounded-2xl border border-slate-200 bg-slate-50 px-4 text-sm font-semibold focus:outline-none focus:ring-4 focus:ring-blue-500/15 focus:border-blue-500" />
                 </div>
                 <button id="btnRefresh" class="h-11 px-4 rounded-2xl bg-white border border-slate-200 font-extrabold text-slate-700">Refresh</button>
@@ -162,22 +62,9 @@
               </div>
             </div>
 
-            <!-- Mobile Cards -->
-            <div id="ordersList" class="mt-4 space-y-3"></div>
-
-            <!-- Desktop Table -->
-            <div class="hidden lg:block mt-6 overflow-auto rounded-2xl border border-slate-200">
-              <table class="w-full text-sm bg-white">
-                <thead class="bg-slate-50 text-slate-600">
-                  <tr class="text-left">
-                    <th class="p-3 font-extrabold">Order No</th>
-                    <th class="p-3 font-extrabold">Date</th>
-                    <th class="p-3 font-extrabold">Site</th>
-                    <th class="p-3 font-extrabold">Grade</th>
-                    <th class="p-3 font-extrabold">Qty</th>
-                    <th class="p-3 font-extrabold">Status</th>
-                  </tr>
-                </thead>
+            <div class="mt-6 w-full overflow-x-auto rounded-2xl border border-slate-200">
+              <table class="w-full text-sm bg-white whitespace-nowrap">
+                <thead id="ordersThead" class="bg-slate-50 text-slate-600"></thead>
                 <tbody id="ordersTbody"></tbody>
               </table>
             </div>
@@ -202,31 +89,13 @@
           </div>
         </div>
       </main>
-
-      <nav class="md:hidden fixed bottom-0 left-0 right-0 z-20 bg-white border-t border-slate-200">
-        <div class="grid grid-cols-3 h-14">
-          <a href="dashboard.html" data-nav="dashboard" class="flex flex-col items-center justify-center gap-1 text-xs font-bold text-slate-600">
-            <span class="text-lg">&#x1F3E0;</span>
-            <span>Dashboard</span>
-          </a>
-          <a href="new-order.html" data-nav="neworder" class="flex flex-col items-center justify-center gap-1 text-xs font-bold text-slate-600">
-            <span class="text-lg">&#x2795;</span>
-            <span>New Order</span>
-          </a>
-          <a href="orders.html" data-nav="orders" class="flex flex-col items-center justify-center gap-1 text-xs font-bold text-slate-600">
-            <span class="text-lg">&#x1F4C4;</span>
-            <span>Orders</span>
-          </a>
-        </div>
-      </nav>
     </div>
   </div>
-
   <script src="app.js"></script>
   <script>
     TGApp.initShell('orders');
 
-    let ALL = [];
+    let ALL_ROWS = [];
     let ACTIVE = 'new';
     let PAGE_NO = 1;
     let PAGE_SIZE = 10;
@@ -257,14 +126,6 @@
       const b=$('errBox');
       b.textContent='';
       b.classList.add('hidden');
-    }
-
-    function badgeClass(status){
-      const s=(status||'').toLowerCase();
-      if(s==='approved') return 'border-emerald-200 bg-emerald-50 text-emerald-800';
-      if(s==='rejected') return 'border-rose-200 bg-rose-50 text-rose-800';
-      if(s==='rescheduled') return 'border-amber-200 bg-amber-50 text-amber-900';
-      return 'border-blue-200 bg-blue-50 text-blue-800';
     }
 
     function formatDate(val){
@@ -303,73 +164,41 @@
       return 'New';
     }
 
-    function mapRow(row){
-      return {
-        orderNo: row.REQNO ?? row.reqNo ?? row.orderNo ?? '-',
-        date: formatDate(row.REQDATE ?? row.reqDate ?? row.date),
-        status: statusNameFrom(row),
-        site: row.PROJCODE ?? row.projcode ?? row.site ?? '-',
-        grade: row.MIXCODE ?? row.mixcode ?? row.grade ?? '-',
-        qty: row.QTY ?? row.qty ?? '-',
-        reqTime: row.INTTIME ?? row.reqTime ?? '-',
-        pump: row.PUMP ?? row.pump ?? '',
-        ice: row.ICE ?? row.ice ?? '',
-        eleCode: row.ELECODE ?? row.eleCode ?? '',
-        updated: row.SUPDATE ?? row.supdate ?? ''
-      };
+    function buildColumns(rows){
+      const cols = [];
+      const seen = new Set();
+      (rows || []).forEach(row => {
+        if(!row || typeof row !== 'object') return;
+        Object.keys(row).forEach(key => {
+          if(seen.has(key)) return;
+          seen.add(key);
+          cols.push(key);
+        });
+      });
+      return cols;
     }
 
-    function cardHTML(o){
-      return `
-        <div class="bg-white rounded-3xl border border-slate-200 tile-shadow p-4">
-          <div class="flex items-start justify-between gap-3">
-            <div class="min-w-0">
-              <div class="text-sm font-extrabold text-slate-800">${o.orderNo || '-'}</div>
-              <div class="text-xs text-slate-500 font-bold mt-0.5">${o.date || '-'} • ${o.site || '-'}</div>
-            </div>
-            <span class="shrink-0 px-3 py-1 rounded-full text-xs font-extrabold border ${badgeClass(o.status)}">${o.status || '-'}</span>
-          </div>
-
-          <div class="mt-3 grid grid-cols-3 gap-2 text-sm">
-            <div class="rounded-2xl bg-slate-50 border border-slate-200 p-3">
-              <div class="text-[11px] font-extrabold uppercase tracking-wider text-slate-500">Grade</div>
-              <div class="font-extrabold text-slate-800 mt-1">${o.grade || '-'}</div>
-            </div>
-            <div class="rounded-2xl bg-slate-50 border border-slate-200 p-3">
-              <div class="text-[11px] font-extrabold uppercase tracking-wider text-slate-500">Qty</div>
-              <div class="font-extrabold text-slate-800 mt-1">${o.qty || '-'}</div>
-            </div>
-            <div class="rounded-2xl bg-slate-50 border border-slate-200 p-3">
-              <div class="text-[11px] font-extrabold uppercase tracking-wider text-slate-500">Time</div>
-              <div class="font-extrabold text-slate-800 mt-1">${o.reqTime || '-'}</div>
-            </div>
-          </div>
-
-          ${o.remarks ? `<div class="mt-3 text-xs text-slate-600 font-semibold"><span class="font-extrabold">Remarks:</span> ${o.remarks}</div>` : ''}
-
-          <div class="mt-4 flex gap-2">
-            <button class="h-10 px-4 rounded-2xl bg-white border border-slate-200 font-extrabold text-slate-700"
-                    onclick="viewOrder('${o.orderNo || ''}')">View</button>
-            <button class="h-10 px-4 rounded-2xl bg-slate-900 text-white font-extrabold"
-                    onclick="trackOrder('${o.orderNo || ''}')">Track</button>
-          </div>
-        </div>
-      `;
+    function rowValuesText(row){
+      if(!row || typeof row !== 'object') return '';
+      return Object.values(row)
+        .map(v => (v == null ? '' : String(v)))
+        .join(' ')
+        .toLowerCase();
     }
 
-    function rowHTML(o){
-      return `
-        <tr class="border-t">
-          <td class="p-3 font-extrabold text-slate-800">${o.orderNo || '-'}</td>
-          <td class="p-3 text-slate-600 font-semibold">${o.date || '-'}</td>
-          <td class="p-3 text-slate-600 font-semibold">${o.site || '-'}</td>
-          <td class="p-3 text-slate-600 font-semibold">${o.grade || '-'}</td>
-          <td class="p-3 text-slate-600 font-semibold">${o.qty || '-'}</td>
-          <td class="p-3">
-            <span class="px-3 py-1 rounded-full text-xs font-extrabold border ${badgeClass(o.status)}">${o.status || '-'}</span>
-          </td>
-        </tr>
-      `;
+    function cellValue(val){
+      if(val == null || val === '') return '-';
+      if(val instanceof Date) return formatDate(val);
+      if(typeof val === 'string' && val.includes('T')) return formatDate(val);
+      return String(val);
+    }
+
+    function rowHTML(row, cols){
+      const cells = cols.map(key => {
+        const v = cellValue(row?.[key]);
+        return `<td class="p-2 text-slate-600 font-semibold">${v}</td>`;
+      }).join('');
+      return `<tr class="border-t hover:bg-slate-50">${cells}</tr>`;
     }
 
     function applyTabsUI(){
@@ -384,24 +213,32 @@
     function filtered(){
       const q = ($('txtSearch').value || '').trim().toLowerCase();
       const wanted = tabs[ACTIVE];
-      return (ALL || []).filter(o => {
-        const matchTab = (ACTIVE === 'all') ? true : ((o.status || '') === wanted);
+      return (ALL_ROWS || []).filter(row => {
+        const matchTab = (ACTIVE === 'all') ? true : ((statusNameFrom(row) || '') === wanted);
         if(!matchTab) return false;
         if(!q) return true;
-        const hay = `${o.orderNo||''} ${o.site||''} ${o.grade||''}`.toLowerCase();
-        return hay.includes(q);
+        return rowValuesText(row).includes(q);
       });
     }
 
     function render(){
       applyTabsUI();
       const list = filtered();
-      $('ordersList').innerHTML = list.map(cardHTML).join('') || `
-        <div class="rounded-3xl border border-slate-200 bg-white p-6 text-center text-slate-600 font-semibold">
-          No orders found
-        </div>
-      `;
-      $('ordersTbody').innerHTML = list.map(rowHTML).join('');
+      const cols = buildColumns(ALL_ROWS.length ? ALL_ROWS : list);
+      $('ordersThead').innerHTML = cols.length ? `
+        <tr class="text-left">
+          ${cols.map(c => `<th class="p-2 font-extrabold">${c}</th>`).join('')}
+        </tr>
+      ` : '';
+      $('ordersTbody').innerHTML = list.length
+        ? list.map(row => rowHTML(row, cols)).join('')
+        : `
+          <tr class="border-t">
+            <td class="p-6 text-center text-slate-600 font-semibold" colspan="${Math.max(cols.length, 1)}">
+              No orders found
+            </td>
+          </tr>
+        `;
     }
 
     function getCusCode(){
@@ -443,7 +280,7 @@
     function buildQuery(){
       const params = new URLSearchParams();
       const ucode = localStorage.getItem('userCode') || '';
-      if(ucode) params.set('UCODE', ucode);
+      params.set('UCODE', ucode);
       const reqNo = ($('txtSearch').value || '').trim();
       if(reqNo) params.set('ReqNo', reqNo);
       const cusCode = getCusCode();
@@ -473,7 +310,7 @@
 
       const rows = extractRows(data);
       TOTAL_COUNT = extractTotal(data);
-      ALL = rows.map(mapRow);
+      ALL_ROWS = rows;
       HAS_MORE = TOTAL_COUNT != null ? (PAGE_NO * PAGE_SIZE) < TOTAL_COUNT : rows.length === PAGE_SIZE;
       setPagerUI();
       render();
@@ -530,3 +367,5 @@
   </script>
 </body>
 </html>
+
+

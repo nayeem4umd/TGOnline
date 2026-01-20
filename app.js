@@ -19,11 +19,12 @@
   window.TGApp = {
     state: {
       apiBaseI: 'http://192.168.12.102/api/tp/online', // <-- apibase internal
-      apiBaseE: 'http://tguse.dyndns.org:1978/api/tp/online', // <-- apibase external
+      apiBaseE: 'http://tgjblad.dyndns.org:1975/api/tp/online', // <-- apibase external
       apiBase: null,
       apiMode: null,
       apiModeKey: 'tg_api_mode',
       apiBasePromise: null,
+      themeKey: 'tg_theme',
       token: () => localStorage.getItem('userToken') || '',
     },
 
@@ -46,6 +47,373 @@
       el.__t = setTimeout(() => el.classList.add('hidden'), 2200);
     },
 
+    ensureThemeStyles() {
+      if (document.getElementById('tgThemeStyles')) return;
+      const style = document.createElement('style');
+      style.id = 'tgThemeStyles';
+      style.textContent = `
+        @import url('https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700;800&display=swap');
+        :root {
+          color-scheme: light;
+          --tg-bg: #f5f7f5;
+          --tg-panel: #ffffff;
+          --tg-text: #0b1220;
+          --tg-muted: #5a6b60;
+          --tg-border: #d9e2db;
+          --tg-soft: #f0f4f1;
+          --tg-hover: #e6ece8;
+          --tg-accent: #1b7f45;
+          --tg-accent-strong: #156437;
+          --tg-chip-emerald-bg: #e7f2ec;
+          --tg-chip-emerald-fg: #1b7f45;
+          --tg-chip-blue-bg: #e8eef6;
+          --tg-chip-blue-fg: #1e4f8f;
+          --tg-chip-amber-bg: #f4eddc;
+          --tg-chip-amber-fg: #a45f0e;
+          --tg-chip-purple-bg: #efeaf3;
+          --tg-chip-purple-fg: #4e3a89;
+          --tg-chip-cyan-bg: #e4f1f4;
+          --tg-chip-cyan-fg: #0c6b78;
+          --tg-chip-rose-bg: #f3e6e6;
+          --tg-chip-rose-fg: #a23d44;
+          --tg-active-card: #e4f3ea;
+        }
+        html[data-theme="dark"] {
+          color-scheme: dark;
+          --tg-bg: #121821;
+          --tg-panel: #171f29;
+          --tg-text: #e6edf3;
+          --tg-muted: #9aa7b4;
+          --tg-border: #27303a;
+          --tg-soft: #141c25;
+          --tg-hover: #1f2a36;
+          --tg-accent: #22c06a;
+          --tg-accent-strong: #1a9a56;
+          --tg-chip-emerald-bg: #0f2a1e;
+          --tg-chip-emerald-fg: #22c06a;
+          --tg-chip-blue-bg: #121f33;
+          --tg-chip-blue-fg: #6ea6ff;
+          --tg-chip-amber-bg: #2a2012;
+          --tg-chip-amber-fg: #f0b34d;
+          --tg-chip-purple-bg: #211a33;
+          --tg-chip-purple-fg: #c2b3ff;
+          --tg-chip-cyan-bg: #11242c;
+          --tg-chip-cyan-fg: #3bc2cf;
+          --tg-chip-rose-bg: #2a1517;
+          --tg-chip-rose-fg: #ee868f;
+          --tg-active-card: #1b2a25;
+        }
+        body { background: var(--tg-bg) !important; color: var(--tg-text); }
+        body, button, input, select, textarea {
+          font-family: 'Manrope', 'Segoe UI', Tahoma, sans-serif;
+        }
+        body {
+          opacity: 0;
+          transition: opacity 160ms ease-out;
+        }
+        body.tg-ready {
+          opacity: 1;
+        }
+        .bg-white { background-color: var(--tg-panel) !important; }
+        .bg-slate-50 { background-color: var(--tg-soft) !important; }
+        .border-slate-200, .border-slate-100 { border-color: var(--tg-border) !important; }
+        .text-slate-900, .text-slate-800, .text-slate-700 { color: var(--tg-text) !important; }
+        .text-slate-600, .text-slate-500, .text-slate-400 { color: var(--tg-muted) !important; }
+        .hover\\:bg-slate-50:hover { background-color: var(--tg-hover) !important; }
+        .hover\\:bg-slate-100:hover { background-color: var(--tg-hover) !important; }
+        .tile-shadow,
+        .shadow,
+        .shadow-lg,
+        .shadow-xl,
+        .shadow-2xl {
+          box-shadow: 0 10px 22px rgba(15, 23, 42, 0.12) !important;
+        }
+        .focus\\:border-blue-500:focus { border-color: var(--tg-accent) !important; }
+        .focus\\:ring-blue-500\\/15:focus {
+          box-shadow: 0 0 0 4px color-mix(in srgb, var(--tg-accent) 20%, transparent) !important;
+        }
+        .tg-chip-emerald { background: var(--tg-chip-emerald-bg) !important; color: var(--tg-chip-emerald-fg) !important; border-color: color-mix(in srgb, var(--tg-chip-emerald-fg) 28%, var(--tg-border)) !important; }
+        .tg-chip-blue { background: var(--tg-chip-blue-bg) !important; color: var(--tg-chip-blue-fg) !important; border-color: color-mix(in srgb, var(--tg-chip-blue-fg) 28%, var(--tg-border)) !important; }
+        .tg-chip-amber { background: var(--tg-chip-amber-bg) !important; color: var(--tg-chip-amber-fg) !important; border-color: color-mix(in srgb, var(--tg-chip-amber-fg) 28%, var(--tg-border)) !important; }
+        .tg-chip-purple { background: var(--tg-chip-purple-bg) !important; color: var(--tg-chip-purple-fg) !important; border-color: color-mix(in srgb, var(--tg-chip-purple-fg) 28%, var(--tg-border)) !important; }
+        .tg-chip-cyan { background: var(--tg-chip-cyan-bg) !important; color: var(--tg-chip-cyan-fg) !important; border-color: color-mix(in srgb, var(--tg-chip-cyan-fg) 28%, var(--tg-border)) !important; }
+        .tg-chip-rose { background: var(--tg-chip-rose-bg) !important; color: var(--tg-chip-rose-fg) !important; border-color: color-mix(in srgb, var(--tg-chip-rose-fg) 28%, var(--tg-border)) !important; }
+        .tg-active-card { background: var(--tg-active-card) !important; }
+        .tg-menu-icon {
+          width: 28px;
+          height: 28px;
+          display: inline-flex;
+          align-items: center;
+          justify-content: center;
+          border-radius: 10px;
+          border: 1px solid transparent;
+          font-size: 12px;
+          font-weight: 800;
+          line-height: 1;
+        }
+        html[data-theme="dark"] .bg-white {
+          background-image: linear-gradient(180deg, rgba(255,255,255,0.02), rgba(255,255,255,0));
+          box-shadow: 0 14px 30px rgba(2, 6, 23, 0.6);
+        }
+        html[data-theme="dark"] .bg-\\[\\#d9ecff\\],
+        html[data-theme="dark"] .bg-blue-50,
+        html[data-theme="dark"] .bg-emerald-50,
+        html[data-theme="dark"] .bg-amber-50,
+        html[data-theme="dark"] .bg-rose-50 {
+          background-color: #16223a !important;
+        }
+        html[data-theme="dark"] .bg-\\[\\#fbf2f4\\] {
+          background-color: var(--tg-bg) !important;
+        }
+        html[data-theme="dark"] .text-emerald-900,
+        html[data-theme="dark"] .text-amber-900,
+        html[data-theme="dark"] .text-rose-900 {
+          color: #e2e8f0 !important;
+        }
+        html[data-theme="dark"] .text-blue-700,
+        html[data-theme="dark"] .text-blue-600 {
+          color: var(--tg-accent) !important;
+        }
+        html[data-theme="dark"] .border-blue-200,
+        html[data-theme="dark"] .border-emerald-200,
+        html[data-theme="dark"] .border-amber-200,
+        html[data-theme="dark"] .border-rose-200 {
+          border-color: var(--tg-border) !important;
+        }
+        .bg-blue-600 { background-color: var(--tg-accent) !important; }
+        .bg-blue-700 { background-color: var(--tg-accent-strong) !important; }
+        .text-blue-600, .text-blue-700 { color: var(--tg-accent) !important; }
+        .border-blue-200 { border-color: color-mix(in srgb, var(--tg-accent) 30%, var(--tg-border)) !important; }
+        html[data-theme="dark"] .tile-shadow,
+        html[data-theme="dark"] .shadow,
+        html[data-theme="dark"] .shadow-lg,
+        html[data-theme="dark"] .shadow-xl,
+        html[data-theme="dark"] .shadow-2xl {
+          box-shadow: 0 10px 24px rgba(2, 6, 23, 0.55) !important;
+        }
+        html[data-theme="dark"] .rounded-2xl,
+        html[data-theme="dark"] .rounded-3xl,
+        html[data-theme="dark"] .rounded-\\[28px\\] {
+          outline: 1px solid rgba(148, 163, 184, 0.18);
+          outline-offset: -1px;
+        }
+        .tg-theme-toggle {
+          display: inline-flex;
+          align-items: center;
+          justify-content: center;
+          gap: 8px;
+          height: 36px;
+          padding: 0 10px;
+          border-radius: 12px;
+          border: 1px solid var(--tg-border);
+          background: var(--tg-panel);
+          color: var(--tg-text);
+          box-shadow: 0 6px 16px rgba(15, 23, 42, 0.12);
+        }
+        .tg-theme-toggle svg { width: 16px; height: 16px; }
+        .tg-theme-toggle .tg-theme-label {
+          font-size: 11px;
+          font-weight: 800;
+          letter-spacing: 0.08em;
+          text-transform: uppercase;
+        }
+      `;
+      document.head.appendChild(style);
+    },
+
+    getTheme() {
+      return localStorage.getItem(this.state.themeKey) || 'light';
+    },
+
+    applyTheme(theme) {
+      const value = (theme === 'dark') ? 'dark' : 'light';
+      document.documentElement.setAttribute('data-theme', value);
+      localStorage.setItem(this.state.themeKey, value);
+      const meta = document.querySelector('meta[name="theme-color"]');
+      if (meta) meta.setAttribute('content', value === 'dark' ? '#0b3d1f' : '#16a34a');
+      this.updateThemeToggleLabels();
+    },
+
+    toggleTheme() {
+      const next = this.getTheme() === 'dark' ? 'light' : 'dark';
+      this.applyTheme(next);
+    },
+
+    initTheme() {
+      this.ensureThemeStyles();
+      this.applyTheme(this.getTheme());
+    },
+
+    updateThemeToggleLabels() {
+      const nextLabel = this.getTheme() === 'dark' ? 'Light' : 'Dark';
+      const icon = nextLabel === 'Light'
+        ? '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="4"></circle><path d="M12 2v2M12 20v2M4.93 4.93l1.41 1.41M17.66 17.66l1.41 1.41M2 12h2M20 12h2M4.93 19.07l1.41-1.41M17.66 6.34l1.41-1.41"></path></svg>'
+        : '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M21 12.5a8.5 8.5 0 1 1-9.5-9.5 7 7 0 0 0 9.5 9.5z"></path></svg>';
+      document.querySelectorAll('[data-theme-toggle]').forEach(btn => {
+        btn.innerHTML = `${icon}<span class="tg-theme-label">${nextLabel}</span>`;
+        btn.setAttribute('aria-label', `Switch to ${nextLabel} mode`);
+        btn.setAttribute('title', `Switch to ${nextLabel} mode`);
+      });
+    },
+
+    initThemeUI() {
+      const makeButton = () => {
+        const btn = document.createElement('button');
+        btn.type = 'button';
+        btn.className = 'tg-theme-toggle';
+        btn.setAttribute('data-theme-toggle', '1');
+        btn.addEventListener('click', () => this.toggleTheme());
+        return btn;
+      };
+
+      const installs = document.querySelectorAll('#installBtn');
+      if (installs.length) {
+        installs.forEach(installBtn => {
+          const parent = installBtn.parentElement;
+          if (!parent || parent.querySelector('[data-theme-toggle]')) return;
+          const btn = makeButton();
+          if (installBtn.classList.contains('ml-auto')) btn.classList.add('ml-auto');
+          parent.insertBefore(btn, installBtn);
+        });
+      } else if (!document.querySelector('[data-theme-toggle]')) {
+        const btn = makeButton();
+        btn.classList.add('fixed', 'bottom-5', 'right-5', 'z-40', 'shadow-lg');
+        document.body.appendChild(btn);
+      }
+
+      this.updateThemeToggleLabels();
+    },
+
+        ensureShell() {
+      const shellHost = document.getElementById('tgShell');
+      const page = document.getElementById('tgPage');
+      if (!shellHost || !page) return;
+
+      const shellHtml = `
+        <div id="drawerBackdrop" class="hidden fixed inset-0 bg-black/35 z-30"></div>
+        <aside id="drawer" class="fixed top-0 left-0 bottom-0 w-[280px] bg-white z-40 -translate-x-full transition-transform duration-200 tile-shadow overflow-y-auto">
+          <div class="p-4 border-b">
+            <div class="flex items-center justify-between">
+              <div class="font-extrabold tracking-[0.14em] text-slate-800">TRANSGULF</div>
+              <button id="btnCloseDrawer" class="w-10 h-10 rounded-xl hover:bg-slate-100">X</button>
+            </div>
+            <div class="mt-2 text-xs text-slate-500 font-bold" id="hdrMeta">-</div>
+            <div class="text-sm font-extrabold text-slate-800" id="hdrUser">User</div>
+          </div>
+          <nav class="p-3 space-y-2">
+            <a href="dashboard.html" data-nav="dashboard" class="w-full flex items-center gap-3 px-4 h-11 rounded-2xl font-extrabold text-slate-700 hover:bg-slate-100">
+              <span class="tg-menu-icon tg-chip-blue"><svg class="w-4 h-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="8"/><path d="M9 12l2 2 4-4"/></svg></span><span>Dashboard</span>
+            </a>
+            <a href="new-order.html" data-nav="neworder" class="w-full flex items-center gap-3 px-4 h-11 rounded-2xl font-extrabold text-slate-700 hover:bg-slate-100">
+              <span class="tg-menu-icon tg-chip-emerald"><svg class="w-4 h-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 5v14M5 12h14"/></svg></span><span>New Order</span>
+            </a>
+            <a href="orders.html" data-nav="orders" class="w-full flex items-center gap-3 px-4 h-11 rounded-2xl font-extrabold text-slate-700 hover:bg-slate-100">
+              <span class="tg-menu-icon tg-chip-amber"><svg class="w-4 h-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M8 6h12M8 12h12M8 18h12"/><path d="M4 6h.01M4 12h.01M4 18h.01"/></svg></span><span>Orders</span>
+            </a>
+            <a href="calculator.html" data-nav="calculator" class="w-full flex items-center gap-3 px-4 h-11 rounded-2xl font-extrabold text-slate-700 hover:bg-slate-100">
+              <span class="tg-menu-icon tg-chip-cyan"><svg class="w-4 h-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="4" y="3" width="16" height="18" rx="2"/><path d="M8 7h8M8 11h2M12 11h2M16 11h2M8 15h2M12 15h2M16 15h2"/></svg></span><span>Calculator</span>
+            </a>
+            <a href="profile.html" data-nav="profile" class="w-full flex items-center gap-3 px-4 h-11 rounded-2xl font-extrabold text-slate-700 hover:bg-slate-100">
+              <span class="tg-menu-icon tg-chip-purple"><svg class="w-4 h-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M7 3h7l5 5v13a1 1 0 0 1-1 1H7a1 1 0 0 1-1-1V4a1 1 0 0 1 1-1z"/><path d="M14 3v5h5"/></svg></span><span>Profile</span>
+            </a>
+          </nav>
+          <div class="p-4 border-t mt-auto">
+            <button id="btnLogout" class="w-full h-11 rounded-2xl bg-rose-600 text-white font-extrabold">Logout</button>
+          </div>
+        </aside>
+
+        <div class="flex h-screen overflow-hidden">
+          <aside class="hidden md:flex md:w-[270px] bg-white border-r h-screen overflow-y-auto">
+            <div class="w-full flex flex-col min-h-full">
+              <div class="p-5 border-b">
+                <div class="font-extrabold tracking-[0.18em] text-slate-800">TRANSGULF</div>
+                <div class="mt-2 text-xs text-slate-500 font-bold" id="hdrMeta">-</div>
+                <div class="text-sm font-extrabold text-slate-800" id="hdrUser">User</div>
+
+                <div class="mt-4 flex items-center gap-2">
+                  <span id="netDot" class="w-2.5 h-2.5 rounded-full bg-emerald-500"></span>
+                  <span id="netText" class="text-xs font-extrabold uppercase tracking-wider text-slate-500">Online</span>
+                  <button id="installBtn" class="ml-auto hidden text-xs font-extrabold text-blue-600 hover:text-blue-700">Install</button>
+                </div>
+              </div>
+
+              <nav class="p-3 space-y-2">
+                <a href="dashboard.html" data-nav="dashboard" class="w-full flex items-center gap-3 px-4 h-11 rounded-2xl font-bold text-slate-700 hover:bg-slate-100">
+                  <span class="tg-menu-icon tg-chip-blue"><svg class="w-4 h-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="8"/><path d="M9 12l2 2 4-4"/></svg></span><span>Dashboard</span>
+                </a>
+                <a href="new-order.html" data-nav="neworder" class="w-full flex items-center gap-3 px-4 h-11 rounded-2xl font-bold text-slate-700 hover:bg-slate-100">
+                  <span class="tg-menu-icon tg-chip-emerald"><svg class="w-4 h-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 5v14M5 12h14"/></svg></span><span>New Order</span>
+                </a>
+                <a href="orders.html" data-nav="orders" class="w-full flex items-center gap-3 px-4 h-11 rounded-2xl font-bold text-slate-700 hover:bg-slate-100">
+                  <span class="tg-menu-icon tg-chip-amber"><svg class="w-4 h-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M8 6h12M8 12h12M8 18h12"/><path d="M4 6h.01M4 12h.01M4 18h.01"/></svg></span><span>Orders</span>
+                </a>
+                <a href="calculator.html" data-nav="calculator" class="w-full flex items-center gap-3 px-4 h-11 rounded-2xl font-bold text-slate-700 hover:bg-slate-100">
+                  <span class="tg-menu-icon tg-chip-cyan"><svg class="w-4 h-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="4" y="3" width="16" height="18" rx="2"/><path d="M8 7h8M8 11h2M12 11h2M16 11h2M8 15h2M12 15h2M16 15h2"/></svg></span><span>Calculator</span>
+                </a>
+                <a href="profile.html" data-nav="profile" class="w-full flex items-center gap-3 px-4 h-11 rounded-2xl font-bold text-slate-700 hover:bg-slate-100">
+                  <span class="tg-menu-icon tg-chip-purple"><svg class="w-4 h-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M7 3h7l5 5v13a1 1 0 0 1-1 1H7a1 1 0 0 1-1-1V4a1 1 0 0 1 1-1z"/><path d="M14 3v5h5"/></svg></span><span>Profile</span>
+                </a>
+              </nav>
+
+              <div class="p-4 border-t mt-auto">
+                <button id="btnLogout" class="w-full h-11 rounded-2xl bg-rose-600 text-white font-extrabold">Logout</button>
+              </div>
+            </div>
+          </aside>
+
+          <div class="flex-1 min-w-0 h-screen overflow-y-auto">
+            <header class="md:hidden sticky top-0 z-20 bg-[#fbf2f4]">
+              <div class="px-4 pt-4 pb-3">
+                <div class="relative flex items-center justify-between">
+                  <button id="btnMenu" class="w-10 h-10 rounded-xl flex items-center justify-center active:scale-95">
+                    <span class="text-xs font-extrabold">MENU</span>
+                  </button>
+                  <div class="absolute left-1/2 -translate-x-1/2 text-center">
+                    <div class="text-base font-extrabold tracking-[0.18em] text-slate-800">TRANSGULF</div>
+                  </div>
+                  <button id="installBtn" class="hidden w-10 h-10 rounded-xl flex items-center justify-center text-xs font-extrabold text-blue-700 border border-blue-200 bg-white">
+                    Install
+                  </button>
+                </div>
+
+                <div class="mt-3 flex items-center gap-2">
+                  <span id="netDot" class="w-2.5 h-2.5 rounded-full bg-emerald-500"></span>
+                  <span id="netText" class="text-xs font-extrabold uppercase tracking-wider text-slate-500">Online</span>
+                  <div class="ml-auto text-xs text-slate-500 font-bold" id="hdrMeta">-</div>
+                </div>
+              </div>
+            </header>
+
+            <div id="tgPageSlot"></div>
+
+            <nav class="md:hidden fixed bottom-3 left-3 right-3 z-20 bg-white border border-slate-200 rounded-2xl shadow-lg overflow-hidden">
+              <div class="grid grid-cols-3 h-14">
+                <a href="dashboard.html" data-nav="dashboard" class="flex flex-col items-center justify-center gap-1 text-xs font-bold text-slate-600">
+                  <span class="tg-menu-icon tg-chip-blue"><svg class="w-4 h-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="8"/><path d="M9 12l2 2 4-4"/></svg></span>
+                  <span>Dashboard</span>
+                </a>
+                <a href="new-order.html" data-nav="neworder" class="flex flex-col items-center justify-center gap-1 text-xs font-bold text-slate-600">
+                  <span class="tg-menu-icon tg-chip-emerald"><svg class="w-4 h-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 5v14M5 12h14"/></svg></span>
+                  <span>New Order</span>
+                </a>
+                <a href="orders.html" data-nav="orders" class="flex flex-col items-center justify-center gap-1 text-xs font-bold text-slate-600">
+                  <span class="tg-menu-icon tg-chip-amber"><svg class="w-4 h-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M8 6h12M8 12h12M8 18h12"/><path d="M4 6h.01M4 12h.01M4 18h.01"/></svg></span>
+                  <span>Orders</span>
+                </a>
+              </div>
+            </nav>
+          </div>
+        </div>
+      `;
+
+      const pageNode = page;
+      pageNode.remove();
+      shellHost.innerHTML = shellHtml;
+      const slot = document.getElementById('tgPageSlot');
+      slot?.appendChild(pageNode);
+      document.body.classList.add('h-screen', 'overflow-hidden');
+    },
+
     setNetworkBadge() {
       const dot = $('netDot');
       const text = $('netText');
@@ -64,6 +432,9 @@
 
     initShell(activeKey) {
       this.guard();
+      this.ensureShell();
+      document.querySelectorAll('[data-theme-toggle]').forEach((el) => el.remove());
+      this.initThemeUI();
       this.setNetworkBadge();
 
       window.addEventListener('online', () => this.setNetworkBadge());
@@ -96,8 +467,9 @@
       backdrop?.addEventListener('click', close);
 
       // logout
-      const btnLogout = $('btnLogout');
-      btnLogout?.addEventListener('click', () => this.logout());
+      document.querySelectorAll('#btnLogout').forEach(btn => {
+        btn.addEventListener('click', () => this.logout());
+      });
 
       // install
       const installBtn = $('installBtn');
@@ -115,7 +487,7 @@
       const em = localStorage.getItem('userEmail') || '-';
       const rl = localStorage.getItem('userRole') || 'USER';
       $('hdrUser') && ($('hdrUser').textContent = nm);
-      $('hdrMeta') && ($('hdrMeta').textContent = `${em} • ${rl}`);
+      $('hdrMeta') && ($('hdrMeta').textContent = `${em} > ${rl}`);
     },
 
     logout() {
@@ -162,7 +534,7 @@
 
     async isInternalNetwork() {
       const internalUrl = new URL(this.state.apiBaseI);
-      internalUrl.pathname = '/ping';
+      internalUrl.pathname = internalUrl.pathname.replace(/\/$/, '') + '/ping';
       return this.pingUrl(internalUrl.toString());
     },
 
@@ -241,12 +613,12 @@
           companyName: "ASGC CONSTRUCTION SINGLE OWNER LLC - BRANCH OF ABU DHABI",
           notifications: 2,
           tiles: [
-            { id:"newOrder", title:"New Order", route:"new-order.html", icon:"➕", active:true },
-            { id:"orderReq", title:"Orders", route:"orders.html?tab=all", icon:"dY" },
-            { id:"inProcess", title:"Current Orders", route:"orders.html?tab=current", icon:"⏳" },
-            { id:"deliveryNote", title:"My Delivery Note", route:"#", icon:"🧾" },
-            { id:"trackGps", title:"Concrete calculator", route:"calculator.html", icon:"🧮" },
-            { id:"dnAccept", title:"My Delivery Note Accept", route:"#", icon:"✅" }
+            { id:"newOrder", title:"New Order", route:"new-order.html", icon:'<svg class="w-6 h-6" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 5v14M5 12h14"/></svg>', active:true },
+            { id:"orderReq", title:"Orders", route:"orders.html?tab=all", icon:'<svg class="w-6 h-6" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M8 6h12M8 12h12M8 18h12"/><path d="M4 6h.01M4 12h.01M4 18h.01"/></svg>' },
+            { id:"inProcess", title:"Current Orders", route:"orders.html?tab=current", icon:'<svg class="w-6 h-6" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="8"/><path d="M12 7v5l3 2"/></svg>' },
+            { id:"deliveryNote", title:"My Delivery Note", route:"#", icon:'<svg class="w-6 h-6" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M7 3h7l5 5v13a1 1 0 0 1-1 1H7a1 1 0 0 1-1-1V4a1 1 0 0 1 1-1z"/><path d="M14 3v5h5"/></svg>' },
+            { id:"trackGps", title:"Concrete calculator", route:"calculator.html", icon:'<svg class="w-6 h-6" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="4" y="3" width="16" height="18" rx="2"/><path d="M8 7h8M8 11h2M12 11h2M16 11h2M8 15h2M12 15h2M16 15h2"/></svg>' },
+            { id:"dnAccept", title:"My Delivery Note Accept", route:"#", icon:'<svg class="w-6 h-6" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="8"/><path d="M9 12l2 2 4-4"/></svg>' }
           ]
         };
       },
@@ -290,5 +662,19 @@
     }
   };
 })();
+
+document.addEventListener('DOMContentLoaded', () => {
+  if (!window.TGApp) return;
+  window.TGApp.initTheme();
+  window.TGApp.initThemeUI();
+  document.body.classList.add('tg-ready');
+});
+
+window.addEventListener('beforeunload', () => {
+  document.body.classList.remove('tg-ready');
+});
+
+
+
 
 

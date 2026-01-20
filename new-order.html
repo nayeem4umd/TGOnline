@@ -15,72 +15,9 @@
 </head>
 <body class="min-h-screen">
   <div id="toast" class="hidden"></div>
-
-  <div id="drawerBackdrop" class="hidden fixed inset-0 bg-black/35 z-30"></div>
-  <aside id="drawer" class="fixed top-0 left-0 bottom-0 w-[280px] bg-white z-40 -translate-x-full transition-transform duration-200 tile-shadow">
-    <div class="p-4 border-b">
-      <div class="flex items-center justify-between">
-        <div class="font-extrabold tracking-[0.14em] text-slate-800">TRANSGULF</div>
-        <button id="btnCloseDrawer" class="w-10 h-10 rounded-xl hover:bg-slate-100">✕</button>
-      </div>
-      <div class="mt-2 text-xs text-slate-500 font-bold" id="hdrMeta">-</div>
-      <div class="text-sm font-extrabold text-slate-800" id="hdrUser">User</div>
-    </div>
-    <nav class="p-3 space-y-2">
-      <a href="dashboard.html" data-nav="dashboard" class="w-full flex items-center gap-3 px-4 h-11 rounded-2xl font-extrabold text-slate-700 hover:bg-slate-100"><span class="text-lg">🏠</span>Dashboard</a>
-      <a href="new-order.html" data-nav="neworder" class="w-full flex items-center gap-3 px-4 h-11 rounded-2xl font-extrabold text-slate-700 hover:bg-slate-100"><span class="text-lg">➕</span>New Order</a>
-      <a href="orders.html" data-nav="orders" class="w-full flex items-center gap-3 px-4 h-11 rounded-2xl font-extrabold text-slate-700 hover:bg-slate-100"><span class="text-lg">📄</span>Orders</a>
-      <a href="calculator.html" data-nav="calculator" class="w-full flex items-center gap-3 px-4 h-11 rounded-2xl font-extrabold text-slate-700 hover:bg-slate-100"><span class="text-lg">🧮</span>Calculator</a>
-      <a href="profile.html" data-nav="profile" class="w-full flex items-center gap-3 px-4 h-11 rounded-2xl font-extrabold text-slate-700 hover:bg-slate-100"><span class="text-lg">👤</span>Profile</a>
-    </nav>
-    <div class="p-4 border-t mt-auto">
-      <button id="btnLogout" class="w-full h-11 rounded-2xl bg-rose-600 text-white font-extrabold">Logout</button>
-    </div>
-  </aside>
-
-  <div class="flex min-h-screen">
-    <aside class="hidden md:flex md:w-[270px] bg-white border-r">
-      <div class="w-full flex flex-col">
-        <div class="p-5 border-b">
-          <div class="font-extrabold tracking-[0.18em] text-slate-800">TRANSGULF</div>
-          <div class="mt-2 text-xs text-slate-500 font-bold" id="hdrMeta">-</div>
-          <div class="text-sm font-extrabold text-slate-800" id="hdrUser">User</div>
-          <div class="mt-4 flex items-center gap-2">
-            <span id="netDot" class="w-2.5 h-2.5 rounded-full bg-emerald-500"></span>
-            <span id="netText" class="text-xs font-extrabold uppercase tracking-wider text-slate-500">Online</span>
-            <button id="installBtn" class="ml-auto hidden text-xs font-extrabold text-blue-600 hover:text-blue-700">Install</button>
-          </div>
-        </div>
-        <nav class="p-3 space-y-2">
-          <a href="dashboard.html" data-nav="dashboard" class="w-full flex items-center gap-3 px-4 h-11 rounded-2xl font-bold text-slate-700 hover:bg-slate-100"><span class="text-lg">🏠</span>Dashboard</a>
-          <a href="new-order.html" data-nav="neworder" class="w-full flex items-center gap-3 px-4 h-11 rounded-2xl font-bold text-slate-700 hover:bg-slate-100"><span class="text-lg">➕</span>New Order</a>
-          <a href="orders.html" data-nav="orders" class="w-full flex items-center gap-3 px-4 h-11 rounded-2xl font-bold text-slate-700 hover:bg-slate-100"><span class="text-lg">📄</span>Orders</a>
-          <a href="calculator.html" data-nav="calculator" class="w-full flex items-center gap-3 px-4 h-11 rounded-2xl font-bold text-slate-700 hover:bg-slate-100"><span class="text-lg">🧮</span>Calculator</a>
-          <a href="profile.html" data-nav="profile" class="w-full flex items-center gap-3 px-4 h-11 rounded-2xl font-bold text-slate-700 hover:bg-slate-100"><span class="text-lg">👤</span>Profile</a>
-        </nav>
-        <div class="p-4 border-t mt-auto">
-          <button id="btnLogout" class="w-full h-11 rounded-2xl bg-rose-600 text-white font-extrabold">Logout</button>
-        </div>
-      </div>
-    </aside>
-
-    <div class="flex-1 min-w-0">
-      <header class="md:hidden sticky top-0 z-20 bg-[#fbf2f4]">
-        <div class="px-4 pt-4 pb-3">
-          <div class="relative flex items-center justify-between">
-            <button id="btnMenu" class="w-10 h-10 rounded-xl flex items-center justify-center active:scale-95"><span class="text-2xl leading-none">☰</span></button>
-            <div class="absolute left-1/2 -translate-x-1/2 text-center"><div class="text-base font-extrabold tracking-[0.18em] text-slate-800">TRANSGULF</div></div>
-            <button id="installBtn" class="hidden w-10 h-10 rounded-xl flex items-center justify-center text-xs font-extrabold text-blue-700 border border-blue-200 bg-white">Install</button>
-          </div>
-          <div class="mt-3 flex items-center gap-2">
-            <span id="netDot" class="w-2.5 h-2.5 rounded-full bg-emerald-500"></span>
-            <span id="netText" class="text-xs font-extrabold uppercase tracking-wider text-slate-500">Online</span>
-            <div class="ml-auto text-xs text-slate-500 font-bold" id="hdrMeta">-</div>
-          </div>
-        </div>
-      </header>
-
-      <main class="px-4 md:px-8 pb-24 md:pb-10 pt-4 md:pt-8 max-w-6xl mx-auto">
+  <div id="tgShell">
+    <div id="tgPage">
+<main class="px-4 md:px-8 pb-24 md:pb-10 pt-4 md:pt-8 max-w-6xl mx-auto">
         <div class="flex items-start justify-between gap-4 mb-5">
           <div>
             <div class="text-xl md:text-2xl font-extrabold text-slate-800">New Order</div>
@@ -166,26 +103,8 @@
 
         <div id="errBox" class="hidden mt-4 rounded-2xl border border-rose-200 bg-rose-50 p-3 text-sm text-rose-800"></div>
       </main>
-
-      <nav class="md:hidden fixed bottom-0 left-0 right-0 z-20 bg-white border-t border-slate-200">
-        <div class="grid grid-cols-3 h-14">
-          <a href="dashboard.html" data-nav="dashboard" class="flex flex-col items-center justify-center gap-1 text-xs font-bold text-slate-600">
-            <span class="text-lg">&#x1F3E0;</span>
-            <span>Dashboard</span>
-          </a>
-          <a href="new-order.html" data-nav="neworder" class="flex flex-col items-center justify-center gap-1 text-xs font-bold text-slate-600">
-            <span class="text-lg">&#x2795;</span>
-            <span>New Order</span>
-          </a>
-          <a href="orders.html" data-nav="orders" class="flex flex-col items-center justify-center gap-1 text-xs font-bold text-slate-600">
-            <span class="text-lg">&#x1F4C4;</span>
-            <span>Orders</span>
-          </a>
-        </div>
-      </nav>
     </div>
   </div>
-
   <script src="app.js"></script>
   <script>
     TGApp.initShell('neworder');
@@ -202,7 +121,7 @@
       const iceEl = $('iceType');
       const intervalEl = $('intervalTime');
       const eleEl = $('elementType');
-      const dt = getRequiredDateTime();      
+      const dt = getRequiredDateTime();
       const pumpSelections = collectPumpSelections();
       const pumpsStr = pumpSelections.map((p) => `${p.qty}`).join(':');
       const pumpCnt = pumpSelections.reduce((sum, p) => sum + (Number(p.qty) || 0), 0);
@@ -227,7 +146,7 @@
         };
     }
 
-    function validate(p){      
+    function validate(p){
       if(!p.projcode) return "Please select Project / Site";
       if(!p.mixcode) return "Please select Products";
       if(!p.qty || p.qty <= 0) return "Please enter Quantity";
@@ -486,3 +405,6 @@
   </script>
 </body>
 </html>
+
+
+
