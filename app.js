@@ -19,7 +19,7 @@
   window.TGApp = {
     state: {
       apiBaseI: 'http://192.168.12.102/api/tp/online', // <-- apibase internal
-      apiBaseE: 'http://tgjblad.dyndns.org:1975/api/tp/online', // <-- apibase external
+      apiBaseE: 'https://tgapi-proxy.nayeem4umd.workers.dev/api/tp/online', // <-- apibase external proxy for http://tgjblad.dyndns.org:1975
       apiBase: null,
       apiMode: null,
       apiModeKey: 'tg_api_mode',
