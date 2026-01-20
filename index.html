@@ -306,11 +306,10 @@
       TGApp.loadRemembered();
       updateNetworkUI();
 
-      if(TGApp.isInternalNetwork()){
-        $('welcome').textContent = 'WELCOME - INTERNAL';
-      }else{
-        $('welcome').textContent = 'Welcome';
-      }
+      (async () => {
+        const internal = await TGApp.isInternalNetwork();
+        $('welcome').textContent = internal ? 'WELCOME - INTERNAL' : 'Welcome';
+      })();
 
       const isStandalone = window.matchMedia('(display-mode: standalone)').matches || window.navigator.standalone === true;
       const isIOS = /iPhone|iPad|iPod/i.test(navigator.userAgent);
