@@ -544,6 +544,15 @@
         this.state.apiBasePromise = (async () => {
           const cached = localStorage.getItem(this.state.apiModeKey);
           if (cached === 'internal' || cached === 'external') {
+            if (cached === 'internal') {
+              const internalOk = await this.isInternalNetwork();
+              if (!internalOk) {
+                this.state.apiMode = 'external';
+                this.state.apiBase = this.state.apiBaseE;
+                localStorage.setItem(this.state.apiModeKey, 'external');
+                return this.state.apiBase;
+              }
+            }
             this.state.apiMode = cached;
             this.state.apiBase = cached === 'internal' ? this.state.apiBaseI : this.state.apiBaseE;
             return this.state.apiBase;
@@ -673,7 +682,6 @@ document.addEventListener('DOMContentLoaded', () => {
 window.addEventListener('beforeunload', () => {
   document.body.classList.remove('tg-ready');
 });
-
 
 
 
