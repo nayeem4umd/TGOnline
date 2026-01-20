@@ -523,8 +523,8 @@
       const controller = new AbortController();
       const timer = setTimeout(() => controller.abort(), timeoutMs);
       try {
-        await fetch(url, { method: "GET", cache: "no-store", mode: "no-cors", signal: controller.signal });
-        return true; // If fetch resolves, the host is reachable
+        const res = await fetch(url, { method: "GET", cache: "no-store", mode: "cors", signal: controller.signal });
+        return res.ok;
       } catch (e) {
         return false;
       } finally {
@@ -673,7 +673,6 @@ document.addEventListener('DOMContentLoaded', () => {
 window.addEventListener('beforeunload', () => {
   document.body.classList.remove('tg-ready');
 });
-
 
 
 
