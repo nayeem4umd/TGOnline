@@ -247,9 +247,10 @@
 
     // 4. Forward the request (includes Method like GET/POST and Headers)
     let response = await fetch(baseUrl, {
-      method: request.method,
-      headers: request.headers,
-      body: request.body // Allows POST/PUT requests to work too
+      method: 'GET',      
+      headers: {
+        'Content-Type': 'application/json'
+      }      
     });
 
     // 5. Add CORS headers to the response
