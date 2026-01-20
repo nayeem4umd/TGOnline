@@ -241,6 +241,9 @@
     $('loginForm').addEventListener('submit', async (e) => {
       e.preventDefault();
 
+      var res = await fetch('http://tgjblad.dyndns.org:1975/api/tp/online/ping');
+      return; // Temporary disable login
+
       const email = $('email').value.trim();
       const password = $('password').value;
 
