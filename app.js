@@ -683,5 +683,3 @@ window.addEventListener('beforeunload', () => {
   document.body.classList.remove('tg-ready');
 });
 
-
-
