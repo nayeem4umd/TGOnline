@@ -18,8 +18,8 @@
 
   window.TGApp = {
     state: {
-      apiBaseI: 'https://192.168.12.102/api/tp/online', // <-- apibase internal
-      apiBaseE: 'https://tgjblad.dyndns.org:1975/api/tp/online', // <-- apibase external
+      apiBaseI: 'http://192.168.12.102/api/tp/online', // <-- apibase internal
+      apiBaseE: 'http://tgjblad.dyndns.org:1975/api/tp/online', // <-- apibase external
       apiBase: null,
       apiMode: null,
       apiModeKey: 'tg_api_mode',
@@ -532,8 +532,17 @@
       }
     },
 
+    resolveApiBase(mode) {
+      const useProxy = location.protocol === 'https:';
+      if (useProxy) {
+        return mode === 'internal' ? '/api/proxy/internal' : '/api/proxy/external';
+      }
+      return mode === 'internal' ? this.state.apiBaseI : this.state.apiBaseE;
+    },
+
     async isInternalNetwork() {
-      const internalUrl = new URL(this.state.apiBaseI);
+      const base = this.resolveApiBase('internal');
+      const internalUrl = new URL(base, location.origin);
       internalUrl.pathname = internalUrl.pathname.replace(/\/$/, '') + '/ping';
       return this.pingUrl(internalUrl.toString());
     },
@@ -548,19 +557,19 @@
               const internalOk = await this.isInternalNetwork();
               if (!internalOk) {
                 this.state.apiMode = 'external';
-                this.state.apiBase = this.state.apiBaseE;
+                this.state.apiBase = this.resolveApiBase('external');
                 localStorage.setItem(this.state.apiModeKey, 'external');
                 return this.state.apiBase;
               }
             }
             this.state.apiMode = cached;
-            this.state.apiBase = cached === 'internal' ? this.state.apiBaseI : this.state.apiBaseE;
+            this.state.apiBase = this.resolveApiBase(cached);
             return this.state.apiBase;
           }
 
           const internalOk = await this.isInternalNetwork();
           this.state.apiMode = internalOk ? 'internal' : 'external';
-          this.state.apiBase = internalOk ? this.state.apiBaseI : this.state.apiBaseE;
+          this.state.apiBase = this.resolveApiBase(this.state.apiMode);
           localStorage.setItem(this.state.apiModeKey, this.state.apiMode);
           return this.state.apiBase;
         })();
@@ -682,4 +691,3 @@ document.addEventListener('DOMContentLoaded', () => {
 window.addEventListener('beforeunload', () => {
   document.body.classList.remove('tg-ready');
 });
-
