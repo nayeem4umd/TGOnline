@@ -18,8 +18,8 @@
 
   window.TGApp = {
     state: {
-      apiBaseI: 'http://192.168.12.102/api/tp/online', // <-- apibase internal
-      apiBaseE: 'http://tgjblad.dyndns.org:1975/api/tp/online', // <-- apibase external
+      apiBaseI: 'https://192.168.12.102/api/tp/online', // <-- apibase internal
+      apiBaseE: 'https://tgjblad.dyndns.org:1975/api/tp/online', // <-- apibase external
       apiBase: null,
       apiMode: null,
       apiModeKey: 'tg_api_mode',
